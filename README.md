@@ -18,4 +18,46 @@ To see how to use it, check Test.java.
 1. Clone repository to local drive
 2. Use ```maven build clean install```
 
+### Quickstart
+
+Define Java Interface with methods representing foreign funcitons.
+All parameters and retur ntypoes are of type MemorySegment (aka pointer) except forprimitive types.
+
+Latest change supports primitive type arrays also.
+
+Example - C/C++ pseudo code
+
+```
+void function process(int percentage)
+*byte[] compress(int level, *byte[] data, *process callback) {
+ ... do compression and return pointer to compressed data ...
+}
+```
+
+Ecample - Java mapping options
+
+```
+@External(name="compression.dll")
+interface ForeignCompressor (
+
+  // Option 1 - with more low level control
+  MemorySegment compress(int level, MemorySegment data, MemorySegment callback)
+
+  // Option 2 - with automatic data conversion; callback must be bind to an instance
+  byte[] compress(int level, byte[] data, MethodHandle callback)
+
+  // Option 3 - with automatic data conversion
+  byte[] compress(int level, byte[] data, @Callback(name="process") ICallback callback)
+
+)
+
+interface ICallback {
+
+    @Callback(name="process")
+    void callback(int percentage)
+}
+
+```
+
+
 &copy; Green Screens Ltd. 2016 - 2023
