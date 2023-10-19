@@ -96,6 +96,7 @@ final class ExternalInvocationHandler implements InvocationHandler {
 		final Object[] arguments = wrap(method, args);	
 		final Object obj = Objects.isNull(args) ? handle.invoke() : handle.invoke(arguments);
 		final boolean isString = String.class.equals(method.getReturnType());		
+		// TODO add support for array of primitive types
 		return isString ? ((MemorySegment) obj).reinterpret(Integer.MAX_VALUE, arena, null).getUtf8String(0) : obj;
 	}
 	
