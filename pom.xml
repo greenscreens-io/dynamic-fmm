@@ -13,33 +13,33 @@
 		<url>https://www.greenscreens.io</url>
 	</organization>
 
-    <licenses>
-        <license>
-            <name>MIT</name>
-            <url>https://github.com/greenscreens-io/dynamic-fmm/blob/master/LICENSE</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-	
-    <scm>
-        <connection>scm:git:git@github.com:greenscreens-io/dynamic-fmm.git</connection>
-        <developerConnection>scm:git:git@github.com:greenscreens-io/dynamic-fmm.git</developerConnection>
-        <url>https://github.com/greenscreens-io/dynamic-fmm</url>
-        <tag>HEAD</tag>
-    </scm>
+	<licenses>
+		<license>
+			<name>MIT</name>
+			<url>https://github.com/greenscreens-io/dynamic-fmm/blob/master/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
-    <issueManagement>
-        <system>Github</system>
-        <url>https://github.com/greenscreens-io/dynamic-fmm/issues</url>
-    </issueManagement>
+	<scm>
+		<connection>scm:git:git@github.com:greenscreens-io/dynamic-fmm.git</connection>
+		<developerConnection>scm:git:git@github.com:greenscreens-io/dynamic-fmm.git</developerConnection>
+		<url>https://github.com/greenscreens-io/dynamic-fmm</url>
+		<tag>HEAD</tag>
+	</scm>
 
-    <distributionManagement>
-       <repository>
-         <id>github</id>
-         <name>GitHub greenscreens-io Apache Maven Packages</name>
-         <url>https://maven.pkg.github.com/greenscreens-io/dynamic-fmm</url>
-       </repository>
-    </distributionManagement>	
+	<issueManagement>
+		<system>Github</system>
+		<url>https://github.com/greenscreens-io/dynamic-fmm/issues</url>
+	</issueManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub greenscreens-io Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/greenscreens-io/dynamic-fmm</url>
+		</repository>
+	</distributionManagement>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -91,10 +91,10 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.1.2</version>
 				<configuration>
-	                <release>21</release> 
-                	<compilerArgs>- -enable-preview</compilerArgs>
-				</configuration>				
-			  </plugin>
+					<release>21</release>
+					<compilerArgs>- -enable-preview</compilerArgs>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
