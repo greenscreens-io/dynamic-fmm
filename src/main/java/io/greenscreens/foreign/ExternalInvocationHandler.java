@@ -122,7 +122,8 @@ final class ExternalInvocationHandler implements InvocationHandler {
 		if (byte.class.equals(type)) {
 			return ((MemorySegment) ret).toArray(ValueLayout.JAVA_BYTE);
 		} else if (boolean.class.equals(type)) {
-			return ((MemorySegment) ret).toArray(ValueLayout.JAVA_BYTE);
+			final byte[] raw = ((MemorySegment) ret).toArray(ValueLayout.JAVA_BYTE);
+			return ExternalFactory.toBoolean(raw);
 		} else if (char.class.equals(type)) {
 			return ((MemorySegment) ret).toArray(ValueLayout.JAVA_CHAR);
 		} else if (double.class.equals(type)) {
@@ -168,7 +169,8 @@ final class ExternalInvocationHandler implements InvocationHandler {
 					if (byte.class.equals(klazz)) {
 						arguments[i] = gcarena.allocateArray(ValueLayout.JAVA_BYTE, (byte[])args[i]);
 					} else if (boolean.class.equals(klazz)) {
-						arguments[i] = gcarena.allocateArray(ValueLayout.JAVA_BYTE, (byte[])args[i]);
+						final byte[] raw = ExternalFactory.toBytes((boolean[])args[i]);
+						arguments[i] = gcarena.allocateArray(ValueLayout.JAVA_BYTE, raw);		
 					} else if (char.class.equals(klazz)) {
 						arguments[i] = gcarena.allocateArray(ValueLayout.JAVA_CHAR, (char[])args[i]);
 					} else if (double.class.equals(klazz)) {

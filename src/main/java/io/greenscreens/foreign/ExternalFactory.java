@@ -58,4 +58,33 @@ public enum ExternalFactory {
 		ms.asByteBuffer().order(ByteOrder.nativeOrder()).asCharBuffer().put(s).put('\0');
 		return ms;
 	}
+
+	/**
+	 * Boolean array support
+	 * @param bytes
+	 * @return
+	 */
+	public static boolean[] toBoolean(byte[] bytes) {
+		final boolean[] bits = new boolean[bytes.length];
+		int i = bytes.length;
+		while (--i >= 0) {
+			bits[i] = (bytes[i] & 0x01) == 1;
+		}
+		return bits;
+	}
+	
+	/**
+	 * Boolean array support
+	 * @param bits
+	 * @return
+	 */
+	public static byte[] toBytes(final boolean[] bits) {
+		final byte[] bytes = new byte[bits.length];
+		int i = bits.length;
+		while (--i >= 0) {
+			bytes[i] = (byte) (bits[i] ? 1 : 0);
+		}
+		return bytes;
+	}
+
 }
