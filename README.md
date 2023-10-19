@@ -34,7 +34,7 @@ void function process(int percentage)
 }
 ```
 
-Ecample - Java mapping options
+Example - Java mapping options
 
 ```
 @External(name="compression.dll")
