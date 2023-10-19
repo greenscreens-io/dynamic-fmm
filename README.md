@@ -61,12 +61,11 @@ interface ICallback {
 
 Finally, create a callable instance.
 
-´´´
+```
 final ForeignCompressor instance = ExternalFactory.create(ForeignCompressor.class);
 
 byte[] compressed = instance.compress(6, "Quick brown fox jumps over the lazy dog".getBytes(), null);
-
-´´´
+```
 
 
 &copy; Green Screens Ltd. 2016 - 2023
