@@ -119,7 +119,9 @@ final class ExternalInvocationHandler implements InvocationHandler {
 		
 		while (i<args.length) {
 			final Class<?>  klazz = types[i];
-			if (klazz.isArray() && klazz.arrayType().isPrimitive()) {
+			if (Objects.isNull(args[i])) {
+				arguments[i] = null;
+			} else if (klazz.isArray() && klazz.arrayType().isPrimitive()) {
 					if (Objects.isNull(gcarena)) gcarena = Arena.ofAuto();
 					if (byte.class.equals(klazz)) {
 						arguments[i] = gcarena.allocateArray(ValueLayout.JAVA_BYTE, (byte[])args[i]);
