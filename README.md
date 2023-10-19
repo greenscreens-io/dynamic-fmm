@@ -11,7 +11,7 @@ Java 21 based JEP 454 Foreign Function and Memory API  - Alternative to JNI and 
 To see how to use it, check Test.java.
 
 ### Important!!!
- To use WKHTMLTOX demo, download library from https://wkhtmltopdf.org/downloads.html and extract xkhtmltox.dll or xkhtmltox.so into project libs folder.
+ To use WKHTMLTOX demo, download library from https://wkhtmltopdf.org/downloads.html and extract wkhtmltox.dll or wkhtmltox.so into project libs folder.
  
 ### Build
 
