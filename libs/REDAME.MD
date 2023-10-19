@@ -1,0 +1,1 @@
+ To use WKHTMLTOX demo, download library from https://wkhtmltopdf.org/downloads.html and extract xkhtmltox.dll or xkhtmltox.so into this folder.
