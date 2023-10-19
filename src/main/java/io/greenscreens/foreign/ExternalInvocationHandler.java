@@ -94,10 +94,51 @@ final class ExternalInvocationHandler implements InvocationHandler {
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		final MethodHandle handle = get(method);
 		final Object[] arguments = wrap(method, args);	
-		final Object obj = Objects.isNull(args) ? handle.invoke() : handle.invoke(arguments);
-		final boolean isString = String.class.equals(method.getReturnType());		
-		// TODO add support for array of primitive types
-		return isString ? ((MemorySegment) obj).reinterpret(Integer.MAX_VALUE, arena, null).getUtf8String(0) : obj;
+		final Object ret = Objects.isNull(args) ? handle.invoke() : handle.invoke(arguments);
+		return unwrap(method, ret);
+	}
+	
+	/**
+	 * Unwrap result with support for array of primitive types or string 
+	 * Converts MemorySegment to actual type if supported. 
+	 * @param method 
+	 * @param ret Unwrapped data type
+	 * @return
+	 */
+	private Object unwrap(final Method method, final Object ret) {
+		
+		Class<?> type = method.getReturnType();
+		final boolean isArray = type.isArray();
+		final boolean isPrimitive = isArray ? type.arrayType().isPrimitive() : type.isPrimitive();
+		type = isArray && isPrimitive ? type.arrayType() : type;
+		
+		if (!isPrimitive) {
+			final boolean isString = String.class.equals(type);	
+			return isString ? ((MemorySegment) ret).reinterpret(Integer.MAX_VALUE, arena, null).getUtf8String(0) : ret;			
+		}
+		
+		if (!isArray) return ret;
+		
+		if (byte.class.equals(type)) {
+			return ((MemorySegment) ret).toArray(ValueLayout.JAVA_BYTE);
+		} else if (boolean.class.equals(type)) {
+			return ((MemorySegment) ret).toArray(ValueLayout.JAVA_BYTE);
+		} else if (char.class.equals(type)) {
+			return ((MemorySegment) ret).toArray(ValueLayout.JAVA_CHAR);
+		} else if (double.class.equals(type)) {
+			return ((MemorySegment) ret).toArray(ValueLayout.JAVA_DOUBLE);
+		} else if (float.class.equals(type)) {
+			return ((MemorySegment) ret).toArray(ValueLayout.JAVA_FLOAT);
+		} else if (int.class.equals(type)) {
+			return ((MemorySegment) ret).toArray(ValueLayout.JAVA_INT);
+		} else if (long.class.equals(type)) {
+			return ((MemorySegment) ret).toArray(ValueLayout.JAVA_LONG);
+		} else if (short.class.equals(type)) {
+			return ((MemorySegment) ret).toArray(ValueLayout.JAVA_SHORT);
+		} 
+		
+		return ret;
+		
 	}
 	
 	/**
