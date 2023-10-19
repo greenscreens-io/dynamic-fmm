@@ -55,6 +55,7 @@
 	</properties>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
 
 		<plugins>
@@ -74,10 +75,6 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.version}</version>
 				<configuration>
-					<!-- 
-		                <release>21</release> 
-	                	<compilerArgs>- -enable-preview</compilerArgs>
-					-->
 					<enablePreview>true</enablePreview>
 				</configuration>
 			</plugin>
