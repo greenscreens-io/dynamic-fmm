@@ -9,7 +9,7 @@ import java.lang.reflect.Proxy;
  * Main dynamic foreign function engine.
  */
 public enum ExternalFactory {
-	;
+    ;
 
 	/**
 	 * Pass an Interface for its methods to map to the foreign library.
@@ -19,14 +19,14 @@ public enum ExternalFactory {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T create(final Class<T> caller) {
+    public static <T> T create(final Class<T> caller) {
 
-		final ExternalInvocationHandler handler = new ExternalInvocationHandler(caller);
+        final ExternalInvocationHandler handler = new ExternalInvocationHandler(caller);
 
-		final Object instance = Proxy.newProxyInstance(caller.getClassLoader(), new Class<?>[] { caller }, handler);
+        final Object instance = Proxy.newProxyInstance(caller.getClassLoader(), new Class<?>[]{caller}, handler);
 
-		return (T) instance;
+        return (T) instance;
 
-	}
+    }
 
 }
