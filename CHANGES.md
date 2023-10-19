@@ -1,6 +1,9 @@
 
 ## v1.1.0 (TBR)
  - Support for primitive arrays return types
+ - Support for primitive arrays parameters
+ - Improved data handling
+ - Code refactoring
 
 ## v1.0.0 (19.10.2023)
 
