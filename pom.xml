@@ -1,11 +1,45 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>io.greenscreens</groupId>
-  <artifactId>io.greenscreens.ffm</artifactId>
-  <version>1.0.0</version>
-  <name>dynamic-ffm</name>
-  <description>Java 21 based JEP 454 Foreign Function and Memory API - Alternative to JNi and JNA</description>
-  
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>io.greenscreens</groupId>
+	<artifactId>io.greenscreens.ffm</artifactId>
+	<version>1.0.0</version>
+	<name>dynamic-ffm</name>
+	<description>Java 21 based JEP 454 Foreign Function and Memory API - Alternative to JNi and JNA</description>
+
+	<organization>
+		<name>Green Screens Ltd.</name>
+		<url>https://www.greenscreens.io</url>
+	</organization>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://github.com/greenscreens-io/dynamic-fmm/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+	
+    <scm>
+        <connection>scm:git:git@github.com:greenscreens-io/dynamic-fmm.git</connection>
+        <developerConnection>scm:git:git@github.com:greenscreens-io/dynamic-fmm.git</developerConnection>
+        <url>https://github.com/greenscreens-io/dynamic-fmm</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/greenscreens-io/dynamic-fmm/issues</url>
+    </issueManagement>
+
+    <distributionManagement>
+       <repository>
+         <id>github</id>
+         <name>GitHub greenscreens-io Apache Maven Packages</name>
+         <url>https://maven.pkg.github.com/greenscreens-io/dynamic-fmm</url>
+       </repository>
+    </distributionManagement>	
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,13 +73,13 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.version}</version>
-	            <configuration>
+				<configuration>
 					<!-- 
 		                <release>21</release> 
 	                	<compilerArgs>- -enable-preview</compilerArgs>
 					-->
-	                <enablePreview>true</enablePreview>
-	            </configuration>				
+					<enablePreview>true</enablePreview>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -55,17 +89,17 @@
 
 		</plugins>
 	</build>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.30</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.30</version>
-		</dependency>							
+		</dependency>
 	</dependencies>
 </project>
