@@ -1,9 +1,8 @@
 
-## v1.1.0 (TBR)
- - Support for primitive arrays return types
- - Support for primitive arrays parameters
- - Support for primitive class 
- - Support for primitive class array
+## v1.1.0 (TBD)
+ - Support for primitive type arrays 
+ - Support for primitive type class 
+ - Support for primitive type class array
  - Improved data handling
  - Code refactoring
 

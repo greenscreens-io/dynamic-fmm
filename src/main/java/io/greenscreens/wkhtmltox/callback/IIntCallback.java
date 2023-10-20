@@ -12,7 +12,9 @@ import io.greenscreens.foreign.Callback;
  */
 public interface IIntCallback {
 	
-	@Callback
+	// named callback, not require in a single method callback
+	// can be used when multiple callbacks used
+	@Callback(name="callback") 
 	void callback(final MemorySegment converter, final int value);
 
 	public static IIntCallback instance() {
