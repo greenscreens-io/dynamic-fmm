@@ -10,9 +10,9 @@ import java.lang.foreign.MemorySegment;
  */
 final class IntCallback implements IIntCallback {
 
-	@Override
-	public void callback(MemorySegment converter, int value) {
-		System.out.println(value);
-	}
+    @Override
+    public void callback(MemorySegment converter, int value) {
+        System.out.println(value);
+    }
 
 }
