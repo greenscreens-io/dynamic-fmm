@@ -21,6 +21,15 @@ import java.util.stream.Collectors;
 enum Helpers {
     ;
 
+    /**
+     * Detect if current OS i Windows
+     *
+     * @return
+     */
+    static boolean isWin() {
+        return System.getProperty("os.name").toLowerCase().contains("win");
+    }
+
 	/**
 	 * Check if class is void (method return type)
 	 * @param type

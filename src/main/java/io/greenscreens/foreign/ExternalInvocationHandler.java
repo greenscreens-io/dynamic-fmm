@@ -63,20 +63,11 @@ final class ExternalInvocationHandler implements InvocationHandler {
         if (lib.length() == 0) {
             lib = Helpers.normalize(System.getProperties().getProperty(annotation.property()));
         }
-        if (isWin()) {
+        if (Helpers.isWin()) {
             return lib.endsWith(".dll") ? lib : lib + ".dll";
         } else {
             return lib.endsWith(".so") ? lib : lib + ".so";
         }
-    }
-
-    /**
-     * Detect if current OS i Windows
-     *
-     * @return
-     */
-    private boolean isWin() {
-        return System.getProperty("os.name").toLowerCase().contains("win");
     }
 
     /**
