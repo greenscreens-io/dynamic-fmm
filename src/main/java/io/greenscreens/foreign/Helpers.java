@@ -12,6 +12,7 @@ import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -144,6 +145,21 @@ enum Helpers {
         return Arrays.asList(clazz.getMethods()).stream()
                 .filter(m -> Objects.nonNull(m.getAnnotation(Callback.class)))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Find index of a first variadic argument; -1 if none
+     *
+     * @param method
+     * @return
+     */
+    static int variadic(final Method method) {
+        final AtomicInteger id = new AtomicInteger(-1);
+        return Arrays.asList(method.getParameters())
+                .stream()
+                .map(p -> p.isVarArgs() ? id.incrementAndGet() : -1)
+                .findFirst()
+                .orElse(-1);
     }
 
 }

@@ -28,11 +28,13 @@ import java.util.stream.Stream;
 enum ForeignGenerator {
     ;
 
-	/**
-	 * List of allowed method parameter and return types
-	 * NOTE: Any class or interface annotated with @Callback is also allowed.
-	 */
-	private final static Class<?>[] ALLOWED_TYPES = {
+	final static Linker linker = Linker.nativeLinker();
+
+    /**
+     * List of allowed method parameter and return types NOTE: Any class or
+     * interface annotated with @Callback is also allowed.
+     */
+    private final static Class<?>[] ALLOWED_TYPES = {
         byte.class, boolean.class, char.class, int.class, long.class, float.class, double.class, short.class,
         Byte.class, Boolean.class, Character.class, Integer.class, Long.class, Float.class, Double.class, Short.class,
         String.class, MethodHandle.class, MemorySegment.class, void.class, Void.class,
@@ -62,9 +64,24 @@ enum ForeignGenerator {
     static MethodHandle build(final SymbolLookup lookup, final Method method) {
         final MemorySegment segment = lookup.find(method.getName()).orElseThrow();
         final FunctionDescriptor descriptor = ForeignGenerator.buildDescriptor(method);
-        final MethodHandle handle = Linker.nativeLinker().downcallHandle(segment, descriptor);
+        final Linker.Option[] opts = options(method);
+        final MethodHandle handle = linker.downcallHandle(segment, descriptor, opts);
         final int count = method.getParameterCount();
         return count == 0 ? handle : handle.asSpreader(Object[].class, count);
+    }
+
+    static Linker.Option[] options(final Method method) {
+        final int id = Helpers.variadic(method);
+        final boolean isTrivial = method.isAnnotationPresent(Trivial.class);
+        int size = (isTrivial ? 1 : 0) + (id < 0 ? 0 : 1);
+        final Linker.Option[] options = new Linker.Option[size];
+        if (id > -1) {
+            options[--size] = Linker.Option.firstVariadicArg(id);
+        }
+        if (isTrivial) {
+            options[--size] = Linker.Option.isTrivial();
+        }
+        return options;
     }
 
     /**

@@ -3,6 +3,8 @@
  - Support for primitive type arrays 
  - Support for primitive type class 
  - Support for primitive type class array
+ - Support for variadic arguments
+ - Support for trivial method optimizations
  - Improved data handling
  - Code refactoring
 
