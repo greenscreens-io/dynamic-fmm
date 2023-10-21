@@ -76,7 +76,7 @@ final class ExternalInvocationHandler implements InvocationHandler {
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         if (!cache.containsKey(method)) {
-            throw UnavalableException.create();
+            throw UnavailableException.create();
         }
         final MethodHandle handle = cache.get(method);
         final Object[] arguments = wrap(method, args);
