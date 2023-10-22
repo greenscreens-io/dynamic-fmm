@@ -22,7 +22,7 @@ enum Helpers {
     ;
 
     /**
-     * Detect if current OS i Windows
+     * Detect if current OS is Windows
      *
      * @return
      */
@@ -30,12 +30,13 @@ enum Helpers {
         return System.getProperty("os.name").toLowerCase().contains("win");
     }
 
-	/**
-	 * Check if class is void (method return type)
-	 * @param type
-	 * @return
-	 */
-	static boolean isVoid(final Class<?> type) {
+    /**
+     * Check if class is void (method return type)
+     *
+     * @param type
+     * @return
+     */
+    static boolean isVoid(final Class<?> type) {
         return void.class.equals(type) || Void.class.equals(type);
     }
 
@@ -108,6 +109,12 @@ enum Helpers {
         return bytes;
     }
 
+    /**
+     * Convert primitive wrapper class instance to a primitive value
+     *
+     * @param obj
+     * @return
+     */
     static Object toPrimitive(final Object obj) {
         if (Objects.isNull(obj)) {
             return null;

@@ -9,7 +9,6 @@ import java.lang.foreign.Linker;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
-import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -70,6 +69,13 @@ enum ForeignGenerator {
         return count == 0 ? handle : handle.asSpreader(Object[].class, count);
     }
 
+    /**
+     * Generate foreign function calling options; support for variadic arguments
+     * and performance optimizations
+     *
+     * @param method
+     * @return
+     */
     static Linker.Option[] options(final Method method) {
         final int id = Helpers.variadic(method);
         final boolean isTrivial = method.isAnnotationPresent(Trivial.class);
@@ -95,6 +101,13 @@ enum ForeignGenerator {
         return Stream.of(type.getMethods()).filter(m -> isAllowed(m)).collect(Collectors.toList());
     }
 
+    /**
+     * Verify if method is allowed for foreign function mapping. Method return
+     * type and arguments must match one of allowed classes
+     *
+     * @param method
+     * @return
+     */
     static boolean isAllowed(final Method method) {
         final Class<?> type = Helpers.toType(method.getReturnType());
         return isAllowed(type)
@@ -104,7 +117,7 @@ enum ForeignGenerator {
     }
 
     /**
-     * Check if
+     * Check if class is one of allowed types
      *
      * @param type
      * @return
@@ -133,7 +146,7 @@ enum ForeignGenerator {
     static FunctionDescriptor buildReturnDescriptor(final Method method) {
         final Class<?> clazz = method.getReturnType();
         final MemoryLayout[] args = tolayouts(method);
-        return args.length == 0 ? FunctionDescriptor.of(toLayout(clazz)) : FunctionDescriptor.of(toLayout(clazz), args);
+        return args.length == 0 ? FunctionDescriptor.of(Converters.toLayout(clazz)) : FunctionDescriptor.of(Converters.toLayout(clazz), args);
     }
 
     /**
@@ -148,43 +161,10 @@ enum ForeignGenerator {
         final MemoryLayout[] args = new MemoryLayout[params.length];
         int i = 0;
         while (i < params.length) {
-            args[i] = toLayout(params[0].getType());
+            args[i] = Converters.toLayout(params[0].getType());
             i++;
         }
         return args;
-    }
-
-    /**
-     * Foreign functions can receive either a primitive types or a "pointer"
-     * represented by Java MemoryAddress class
-     *
-     * @param clazz Java type to be converted
-     * @return Foreign type
-     */
-    static MemoryLayout toLayout(final Class<?> clazz) {
-        MemoryLayout layout = null;
-        if (clazz.isPrimitive()) {
-            if (byte.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_BYTE;
-            } else if (boolean.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_BOOLEAN;
-            } else if (char.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_CHAR;
-            } else if (double.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_DOUBLE;
-            } else if (float.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_FLOAT;
-            } else if (int.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_INT;
-            } else if (long.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_LONG;
-            } else if (short.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_SHORT;
-            }
-        } else {
-            layout = ValueLayout.ADDRESS;
-        }
-        return layout;
     }
 
     /**
@@ -199,7 +179,7 @@ enum ForeignGenerator {
         final MemoryLayout[] args = new MemoryLayout[params.length];
         int i = 0;
         while (i < params.length) {
-            args[i] = toLayout(params[i]);
+            args[i] = Converters.toLayout(params[i]);
             i++;
         }
         return args;
@@ -242,7 +222,7 @@ enum ForeignGenerator {
     static FunctionDescriptor buildReturnDescriptor(final MethodHandle handle) {
         final Class<?> clazz = handle.type().returnType();
         final MemoryLayout[] args = tolayouts(handle);
-        return FunctionDescriptor.of(toLayout(clazz), args);
+        return FunctionDescriptor.of(Converters.toLayout(clazz), args);
     }
 
 }

@@ -30,20 +30,55 @@ final class CallbackGenerator {
         this.callbacks = new ConcurrentHashMap<>();
     }
 
+    /**
+     * Generate MethodHandle from Method argument descriptor Parameter and bind
+     * it to the owner instance
+     *
+     * @param param
+     * @param owner
+     * @param arena Temporary Arena.ofAuto allocation provided from above
+     * @return
+     * @throws IllegalAccessException
+     */
     MemorySegment initCallback(final Parameter param, final Object owner, final Arena arena) throws IllegalAccessException {
         final MethodHandle handle = initCallback(param, owner);
         return ForeignGenerator.toPointer(handle, arena);
     }
 
+    /**
+     * Generate MethodHandle from Method argument descriptor Parameter and bind
+     * it to the owner instance
+     *
+     * @param param
+     * @param owner
+     * @return
+     * @throws IllegalAccessException
+     */
     MethodHandle initCallback(final Parameter param, final Object owner) throws IllegalAccessException {
         final MethodHandle handle = initCallback(param);
         return Objects.nonNull(handle) ? handle.bindTo(owner) : handle;
     }
 
+    /**
+     * Generate MethodHandle from Method argument descriptor Parameter
+     *
+     * @param param
+     * @return
+     * @throws IllegalAccessException
+     */
     MethodHandle initCallback(final Parameter param) throws IllegalAccessException {
         return param.isAnnotationPresent(Callback.class) ? initCallback(param.getType(), param.getAnnotation(Callback.class)) : null;
     }
 
+    /**
+     * Find Class Method that matches Callback annotation , and generate
+     * MethodHandle
+     *
+     * @param clazz
+     * @param callback
+     * @return
+     * @throws IllegalAccessException
+     */
     MethodHandle initCallback(final Class<?> clazz, final Callback callback) throws IllegalAccessException {
         if (Objects.isNull(callback)) {
             return null;

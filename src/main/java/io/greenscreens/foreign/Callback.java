@@ -16,6 +16,7 @@ import java.lang.annotation.Target;
  * considered that Interface contain only one method.
  *
  * If @Callback is named, it is considered that Interface contains multiple
+ *
  * @Callback annotated methods which names must match-
  */
 @Retention(RetentionPolicy.RUNTIME)
