@@ -19,7 +19,7 @@ public interface WKHtmlToX {
 
     ;
 
-	//IAMGE ENGINE
+	//IMAGE ENGINE
 
 	@Trivial
     public int wkhtmltoimage_init(final int use_graphics) throws Throwable;
