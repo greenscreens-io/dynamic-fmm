@@ -19,9 +19,9 @@ public interface WKHtmlToX {
 
     ;
 
-	//IMAGE ENGINE
+    //IMAGE ENGINE
 
-	@Trivial
+    @Trivial
     public int wkhtmltoimage_init(final int use_graphics) throws Throwable;
 
     @Trivial
@@ -58,6 +58,7 @@ public interface WKHtmlToX {
     public void wkhtmltoimage_set_finished_callback(final MemorySegment converter, @Callback(name = "callback") final IIntCallback callback) throws Throwable;
 
     // PDF ENGINE
+
     @Trivial
     public String wkhtmltopdf_version() throws Throwable;
 
