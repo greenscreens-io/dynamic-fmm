@@ -83,8 +83,8 @@ public class Test {
             final int val = instance.wkhtmltopdf_convert(c);
             sts = val == 1;
         } finally {
-			instance.wkhtmltopdf_destroy_object_settings(os);
-			instance.wkhtmltopdf_destroy_global_settings(gs);            
+            instance.wkhtmltopdf_destroy_object_settings(os);
+            instance.wkhtmltopdf_destroy_global_settings(gs);
             instance.wkhtmltopdf_destroy_converter(c);
         }
 
@@ -117,9 +117,9 @@ public class Test {
             final int val = instance.wkhtmltoimage_convert(c);
             sts = val == 1;
         } finally {
-			// cause JVM crash; either bug in wkhtmltox or 
-			// cleared automatically when converter destroyed
-			// instance.wkhtmltoimage_destroy_global_settings(gs);            
+            // cause JVM crash; either bug in wkhtmltox or 
+            // cleared automatically when converter destroyed
+            // instance.wkhtmltoimage_destroy_global_settings(gs);            
             instance.wkhtmltoimage_destroy_converter(c);
         }
 
