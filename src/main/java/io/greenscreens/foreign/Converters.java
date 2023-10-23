@@ -18,13 +18,13 @@ import java.util.Objects;
 enum Converters {
     ;
 
-	/**
-	 * Foreign functions can receive either a primitive types or 
-	 * a "pointer" represented by Java MemoryAddress class 
-	 * @param clazz Java type to be converted
-	 * @return Foreign type
-	 */
-	static MemoryLayout toLayout(final Class<?> clazz) {
+    /**
+     * Foreign functions can receive either a primitive types or 
+     * a "pointer" represented by Java MemoryAddress class 
+     * @param clazz Java type to be converted
+     * @return Foreign type
+     */
+    static MemoryLayout toLayout(final Class<?> clazz) {
         MemoryLayout layout = null;
         if (clazz.isPrimitive()) {
             if (byte.class.equals(clazz)) {

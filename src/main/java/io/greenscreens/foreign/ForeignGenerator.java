@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 enum ForeignGenerator {
     ;
 
-	final static Linker linker = Linker.nativeLinker();
+    final static Linker linker = Linker.nativeLinker();
 
     /**
      * List of allowed method parameter and return types NOTE: Any class or
