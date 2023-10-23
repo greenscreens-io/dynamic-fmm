@@ -112,8 +112,17 @@ enum ForeignGenerator {
         final Class<?> type = Helpers.toType(method.getReturnType());
         return isAllowed(type)
                 && Stream.of(method.getParameters())
-                        .map(c -> isAllowed(Helpers.toType(c.getType())) || c.isAnnotationPresent(Callback.class))
+                        .map(p -> isAllowed(p))
                         .count() == method.getParameterCount();
+    }
+
+    /**
+     * Check if Method parameter is allowed
+     * @param parameter 
+     * @return 
+     */
+    static boolean isAllowed(final Parameter parameter) {
+        return isAllowed(Helpers.toType(parameter.getType())) || parameter.isAnnotationPresent(Callback.class);
     }
 
     /**
