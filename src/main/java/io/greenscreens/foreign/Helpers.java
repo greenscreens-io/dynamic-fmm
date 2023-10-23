@@ -9,11 +9,11 @@ import java.lang.foreign.ValueLayout;
 import java.lang.reflect.Method;
 import java.nio.ByteOrder;
 import java.nio.CharBuffer;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Internal generic data converters
@@ -158,7 +158,7 @@ enum Helpers {
      * @return
      */
     static Collection<Method> getCallbacks(final Class<?> clazz) {
-        return Arrays.asList(clazz.getMethods()).stream()
+        return Stream.of(clazz.getMethods())
                 .filter(m -> Objects.nonNull(m.getAnnotation(Callback.class)))
                 .collect(Collectors.toList());
     }
@@ -171,8 +171,7 @@ enum Helpers {
      */
     static int variadic(final Method method) {
         final AtomicInteger id = new AtomicInteger(-1);
-        return Arrays.asList(method.getParameters())
-                .stream()
+        return Stream.of(method.getParameters())
                 .map(p -> p.isVarArgs() ? id.incrementAndGet() : -1)
                 .findFirst()
                 .orElse(-1);
