@@ -98,7 +98,9 @@ enum ForeignGenerator {
      * @return
      */
     static Collection<Method> allowed(final Class<?> type) {
-        return Stream.of(type.getMethods()).filter(m -> isAllowed(m)).collect(Collectors.toList());
+        return Stream.of(type.getMethods())
+                .filter(m -> isAllowed(m))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -118,8 +120,9 @@ enum ForeignGenerator {
 
     /**
      * Check if Method parameter is allowed
-     * @param parameter 
-     * @return 
+     *
+     * @param parameter
+     * @return
      */
     static boolean isAllowed(final Parameter parameter) {
         return isAllowed(Helpers.toType(parameter.getType())) || parameter.isAnnotationPresent(Callback.class);
@@ -148,13 +151,13 @@ enum ForeignGenerator {
     }
 
     static FunctionDescriptor buildVoidDescriptor(final Method method) {
-        final MemoryLayout[] args = tolayouts(method);
+        final MemoryLayout[] args = toLayouts(method);
         return args.length == 0 ? FunctionDescriptor.ofVoid() : FunctionDescriptor.ofVoid(args);
     }
 
     static FunctionDescriptor buildReturnDescriptor(final Method method) {
         final Class<?> clazz = method.getReturnType();
-        final MemoryLayout[] args = tolayouts(method);
+        final MemoryLayout[] args = toLayouts(method);
         return args.length == 0 ? FunctionDescriptor.of(Converters.toLayout(clazz)) : FunctionDescriptor.of(Converters.toLayout(clazz), args);
     }
 
@@ -165,14 +168,13 @@ enum ForeignGenerator {
      * @param method A method which arguments are to be converted
      * @return
      */
-    static MemoryLayout[] tolayouts(final Method method) {
+    static MemoryLayout[] toLayouts(final Method method) {
         final Parameter[] params = method.getParameters();
         final MemoryLayout[] args = new MemoryLayout[params.length];
         int i = 0;
-        while (i < params.length) {
-            args[i] = Converters.toLayout(params[0].getType());
-            i++;
-        }
+        do {
+            args[i] = Converters.toLayout(params[i].getType());
+        } while (++i < params.length);
         return args;
     }
 
@@ -187,10 +189,9 @@ enum ForeignGenerator {
         final Class<?>[] params = handle.type().parameterArray();
         final MemoryLayout[] args = new MemoryLayout[params.length];
         int i = 0;
-        while (i < params.length) {
+        do {
             args[i] = Converters.toLayout(params[i]);
-            i++;
-        }
+        } while (++i < params.length);
         return args;
     }
 
