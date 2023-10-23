@@ -80,9 +80,7 @@ final class CallbackGenerator {
      * @throws IllegalAccessException
      */
     MethodHandle initCallback(final Class<?> clazz, final Callback callback) throws IllegalAccessException {
-        if (Objects.isNull(callback)) {
-            return null;
-        }
+        if (Objects.isNull(callback)) return null;
         return initCallback(clazz, callback.name());
     }
 
@@ -112,9 +110,7 @@ final class CallbackGenerator {
     Collection<Method> getCallbacks(final Class<?> clazz) {
         final Class<?> type = Helpers.toType(clazz);
         Collection<Method> list = callbacks.get(type);
-        if (Objects.isNull(list)) {
-            list = Helpers.getCallbacks(type);
-        }
+        if (Objects.isNull(list)) list = Helpers.getCallbacks(type);
         return list;
     }
 
