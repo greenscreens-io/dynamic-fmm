@@ -81,12 +81,8 @@ enum ForeignGenerator {
         final boolean isTrivial = method.isAnnotationPresent(Trivial.class);
         int size = (isTrivial ? 1 : 0) + (id < 0 ? 0 : 1);
         final Linker.Option[] options = new Linker.Option[size];
-        if (id > -1) {
-            options[--size] = Linker.Option.firstVariadicArg(id);
-        }
-        if (isTrivial) {
-            options[--size] = Linker.Option.isTrivial();
-        }
+        if (id > -1) options[--size] = Linker.Option.firstVariadicArg(id);
+        if (isTrivial) options[--size] = Linker.Option.isTrivial();
         return options;
     }
 
@@ -202,9 +198,7 @@ enum ForeignGenerator {
      * @return
      */
     static MemorySegment toPointer(final MethodHandle handle, final Arena arena) {
-        if (Objects.isNull(handle)) {
-            return null;
-        }
+        if (Objects.isNull(handle)) return null;
         final FunctionDescriptor descriptor = buildDescriptor(handle);
         return Linker.nativeLinker().upcallStub(handle, descriptor, arena);
     }
@@ -217,9 +211,7 @@ enum ForeignGenerator {
      * @return
      */
     static FunctionDescriptor buildDescriptor(final MethodHandle handle) {
-        if (Objects.isNull(handle)) {
-            return null;
-        }
+        if (Objects.isNull(handle)) return null;
         final boolean isVoid = void.class.equals(handle.type().returnType());
         return isVoid ? buildVoidDescriptor(handle) : buildReturnDescriptor(handle);
     }
