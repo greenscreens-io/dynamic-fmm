@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015, 2023 Green Screens Ltd.
- */
+* Copyright (C) 2015, 2023 Green Screens Ltd.
+*/
 package io.greenscreens.foreign;
 
 import java.lang.foreign.Arena;
@@ -33,17 +33,17 @@ enum ForeignGenerator {
      * List of allowed method parameter and return types NOTE: Any class or
      * interface annotated with @Callback is also allowed.
      */
-    private final static Class<?>[] ALLOWED_TYPES = {
-        byte.class, boolean.class, char.class, int.class, long.class, float.class, double.class, short.class,
-        Byte.class, Boolean.class, Character.class, Integer.class, Long.class, Float.class, Double.class, Short.class,
-        String.class, MethodHandle.class, MemorySegment.class, void.class, Void.class,
-        ByteBuffer.class, CharBuffer.class
-    };
+    private final static Class<?>[] ALLOWED_TYPES = { 
+            byte.class, boolean.class, char.class, int.class, long.class, float.class, double.class, short.class, 
+            Byte.class, Boolean.class, Character.class, Integer.class, Long.class, Float.class, Double.class, Short.class, 
+            String.class, MethodHandle.class, MemorySegment.class, void.class, Void.class, ByteBuffer.class, CharBuffer.class,
+            byte[].class, boolean[].class, char[].class, int[].class, long[].class, float[].class, double[].class, short[].class,
+            };
 
     /**
-     * Generate MetohdHandles from provided Interface, used for foreign
-     * functions call
-     *
+     * Generate MetohdHandles from provided Interface, used for foreign functions
+     * call
+     * 
      * @param symbolLookup
      * @param type
      * @return
@@ -56,7 +56,7 @@ enum ForeignGenerator {
 
     /**
      * Build MethodHandler signature for foreign library function
-     *
+     * 
      * @param method
      * @return
      */
@@ -70,9 +70,9 @@ enum ForeignGenerator {
     }
 
     /**
-     * Generate foreign function calling options; support for variadic arguments
-     * and performance optimizations
-     *
+     * Generate foreign function calling options; support for variadic arguments and
+     * performance optimizations
+     * 
      * @param method
      * @return
      */
@@ -87,22 +87,19 @@ enum ForeignGenerator {
     }
 
     /**
-     * Filter out all allowed methods for foreign functions based on
-     * ALLOWED_TYPES
-     *
+     * Filter out all allowed methods for foreign functions based on ALLOWED_TYPES
+     * 
      * @param type
      * @return
      */
     static Collection<Method> allowed(final Class<?> type) {
-        return Stream.of(type.getMethods())
-                .filter(m -> isAllowed(m))
-                .collect(Collectors.toList());
+        return Stream.of(type.getMethods()).filter(m -> isAllowed(m)).collect(Collectors.toList());
     }
 
     /**
-     * Verify if method is allowed for foreign function mapping. Method return
-     * type and arguments must match one of allowed classes
-     *
+     * Verify if method is allowed for foreign function mapping. Method return type
+     * and arguments must match one of allowed classes
+     * 
      * @param method
      * @return
      */
@@ -116,9 +113,8 @@ enum ForeignGenerator {
 
     /**
      * Check if Method parameter is allowed
-     *
-     * @param parameter
-     * @return
+     * @param parameter 
+     * @return 
      */
     static boolean isAllowed(final Parameter parameter) {
         return isAllowed(Helpers.toType(parameter.getType())) || parameter.isAnnotationPresent(Callback.class);
@@ -126,7 +122,7 @@ enum ForeignGenerator {
 
     /**
      * Check if class is one of allowed types
-     *
+     * 
      * @param type
      * @return
      */
@@ -137,7 +133,7 @@ enum ForeignGenerator {
     /**
      * Build a descriptor from an Interface method, required to create a foreign
      * call
-     *
+     * 
      * @param method
      * @return
      */
@@ -160,29 +156,12 @@ enum ForeignGenerator {
     /**
      * Convert Interface method arguments into a signature for foreign library
      * function
-     *
+     * 
      * @param method A method which arguments are to be converted
      * @return
      */
     static MemoryLayout[] toLayouts(final Method method) {
         final Parameter[] params = method.getParameters();
-        final MemoryLayout[] args = new MemoryLayout[params.length];
-        int i = 0;
-        do {
-            args[i] = Converters.toLayout(params[i].getType());
-        } while (++i < params.length);
-        return args;
-    }
-
-    /**
-     * Convert callback method arguments into a signature for foreign library
-     * function
-     *
-     * @param handle
-     * @return
-     */
-    static MemoryLayout[] tolayouts(final MethodHandle handle) {
-        final Class<?>[] params = handle.type().parameterArray();
         final MemoryLayout[] args = new MemoryLayout[params.length];
         int i = -1;
         while (++i < params.length) {
@@ -192,8 +171,25 @@ enum ForeignGenerator {
     }
 
     /**
+     * Convert callback method arguments into a signature for foreign library
+     * function
+     * 
+     * @param handle
+     * @return
+     */
+    static MemoryLayout[] tolayouts(final MethodHandle handle) {
+        final Class<?>[] params = handle.type().parameterArray();
+        final MemoryLayout[] args = new MemoryLayout[params.length];
+        int i = 0;
+        do {
+            args[i] = Converters.toLayout(params[i]);
+        } while (++i < params.length);
+        return args;
+    }
+
+    /**
      * Convert callback method to a "pointer"
-     *
+     * 
      * @param handle
      * @return
      */
@@ -206,7 +202,7 @@ enum ForeignGenerator {
     /**
      * Build a descriptor from a callback method, required to create a callback
      * pointer
-     *
+     * 
      * @param handle
      * @return
      */
