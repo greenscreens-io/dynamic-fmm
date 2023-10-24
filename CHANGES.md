@@ -1,10 +1,12 @@
 
 ## v1.1.0 (TBD)
+ - Added @Trivial annotation to support trivial method optimizations 
+ - Added @Size annotation to support return data size
+ - Refactor @Callback annottation - simplification
  - Support for primitive type arrays 
  - Support for primitive type class 
  - Support for primitive type class array
  - Support for variadic arguments
- - Support for trivial method optimizations
  - Improved data handling
  - Code refactoring
 
