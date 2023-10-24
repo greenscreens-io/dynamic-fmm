@@ -84,9 +84,12 @@ public interface CryptoJSLowLevel {
     boolean RSA_Has_Key(final String id, final boolean pub);
     MemorySegment RSA_Export_Private_Key_Pem(final String id);
     MemorySegment RSA_Export_Private_Key_JWK(final String id);
-    byte[] RSA_Export_Private_Key_Raw(final String id);
+    MemorySegment RSA_Export_Private_Key_Raw(final String id);
     
     MemorySegment RSA_Export_Public_Key_Pem(final String id);
     MemorySegment RSA_Export_Public_Key_Jwk(final String id);
-    byte[] RSA_Export_Public_Key_Raw(final String id);
+    MemorySegment RSA_Export_Public_Key_Raw(final String id);
+
+    MemorySegment RSA_Decrypt(final String id, final int size, final byte[] data, final int length);
+    MemorySegment RSA_Encrypt(final String id, final int size, final byte[] data, final int length);
 }

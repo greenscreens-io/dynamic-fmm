@@ -88,4 +88,7 @@ public interface CryptoJS {
     String RSA_Export_Public_Key_Pem(final String id);
     String RSA_Export_Public_Key_Jwk(final String id);
     byte[] RSA_Export_Public_Key_Raw(final String id);
+
+    byte[] RSA_Decrypt(final String id, final int size, final byte[] data, final int length);
+    byte[] RSA_Encrypt(final String id, final int size, final byte[] data, final int length);
 }
