@@ -20,31 +20,30 @@ enum Converters {
     ;
 
     /**
-     * Foreign functions can receive either a primitive types or 
-     * a "pointer" represented by Java MemoryAddress class 
+     * Foreign functions can receive either a primitive types or a "pointer"
+     * represented by Java MemoryAddress class
+     * 
      * @param clazz Java type to be converted
      * @return Foreign type
      */
     static MemoryLayout toLayout(final Class<?> clazz) {
         MemoryLayout layout = null;
-        if (clazz.isPrimitive()) {
-            if (byte.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_BYTE;
-            } else if (boolean.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_BOOLEAN;
-            } else if (char.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_CHAR;
-            } else if (double.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_DOUBLE;
-            } else if (float.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_FLOAT;
-            } else if (int.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_INT;
-            } else if (long.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_LONG;
-            } else if (short.class.equals(clazz)) {
-                layout = ValueLayout.JAVA_SHORT;
-            }
+        if (byte.class.equals(clazz)) {
+            layout = ValueLayout.JAVA_BYTE;
+        } else if (boolean.class.equals(clazz)) {
+            layout = ValueLayout.JAVA_BOOLEAN;
+        } else if (char.class.equals(clazz)) {
+            layout = ValueLayout.JAVA_CHAR;
+        } else if (double.class.equals(clazz)) {
+            layout = ValueLayout.JAVA_DOUBLE;
+        } else if (float.class.equals(clazz)) {
+            layout = ValueLayout.JAVA_FLOAT;
+        } else if (int.class.equals(clazz)) {
+            layout = ValueLayout.JAVA_INT;
+        } else if (long.class.equals(clazz)) {
+            layout = ValueLayout.JAVA_LONG;
+        } else if (short.class.equals(clazz)) {
+            layout = ValueLayout.JAVA_SHORT;
         } else {
             layout = ValueLayout.ADDRESS;
         }
@@ -115,7 +114,7 @@ enum Converters {
             return ((Short) data).shortValue();
 
         } else if (MemorySegment.class.equals(type)) {
-            return (MemorySegment) data;
+            return data;
         } else if (MethodHandle.class.equals(type)) {
             return ForeignGenerator.toPointer((MethodHandle) data, arena);
         } else if (String.class.equals(type)) {
@@ -144,12 +143,12 @@ enum Converters {
      * @param arena
      * @return
      */
-    static Object fromExternal(final Class<?> klass, final Object data, final Arena arena) {
+    static Object fromExternal(final Class<?> klass, final Object data, final int length, final Arena arena) {
         if (Objects.isNull(data)) {
             return null;
         }
         final boolean isPointer = data instanceof MemorySegment;
-        return isPointer ? fromExternal(klass, (MemorySegment) data, arena) : data;
+        return isPointer ? fromExternal(klass, (MemorySegment) data, length, arena) : data;
     }
 
     /**
@@ -160,14 +159,19 @@ enum Converters {
      * @param arena
      * @return
      */
-    static Object fromExternal(final Class<?> klass, final MemorySegment data, final Arena arena) {
+    static Object fromExternal(final Class<?> klass, final MemorySegment pointer, final int length, final Arena arena) {
 
-        if (Objects.isNull(data)) {
+        if (Objects.isNull(pointer)) {
             return null;
         }
 
         final Class<?> type = Helpers.toType(klass);
         if (Helpers.isVoid(type)) {
+            return pointer;
+        }
+
+        final MemorySegment data = length > 0 ? pointer.reinterpret(length) : pointer;
+        if (MemorySegment.class.equals(klass)) {
             return data;
         }
 
@@ -206,9 +210,9 @@ enum Converters {
         } else if (short.class.equals(type)) {
             return data.get(ValueLayout.JAVA_SHORT, 0);
 
-        } else if (Boolean.class.equals(type)) {
+        } else if (Boolean.class.isAssignableFrom(type)) {
             return Boolean.valueOf(data.get(ValueLayout.JAVA_BOOLEAN, 0));
-        } else if (Byte.class.equals(type)) {
+        } else if (Byte.class.isAssignableFrom(type)) {
             return Byte.valueOf(data.get(ValueLayout.JAVA_BYTE, 0));
         } else if (Double.class.isAssignableFrom(type)) {
             return Double.valueOf(data.get(ValueLayout.JAVA_DOUBLE, 0));
@@ -221,16 +225,16 @@ enum Converters {
         } else if (Short.class.isAssignableFrom(type)) {
             return Short.valueOf(data.get(ValueLayout.JAVA_SHORT, 0));
 
-        } else if (Character.class.equals(type)) {
+        } else if (Character.class.isAssignableFrom(type)) {
             return Character.valueOf(data.get(ValueLayout.JAVA_CHAR, 0));
-        } else if (String.class.equals(type)) {
+        } else if (String.class.isAssignableFrom(type)) {
             return data.reinterpret(Integer.MAX_VALUE, arena, null).getUtf8String(0);
 
         } else if (ByteBuffer.class.isAssignableFrom(type)) {
-            final byte[] raw = (byte[]) fromExternal(byte[].class, data, arena);
+            final byte[] raw = (byte[]) fromExternal(byte[].class, data, length, arena);
             return ByteBuffer.wrap(raw);
         } else if (CharBuffer.class.isAssignableFrom(type)) {
-            final char[] raw = (char[]) fromExternal(char[].class, data, arena);
+            final char[] raw = (char[]) fromExternal(char[].class, data, length, arena);
             return CharBuffer.wrap(raw);
         }
 

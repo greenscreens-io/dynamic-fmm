@@ -24,7 +24,7 @@ final class CallbackGenerator {
     private final Lookup lookup;
     private final Map<Class<?>, Collection<Method>> callbacks;
 
-    public CallbackGenerator() {
+    CallbackGenerator() {
         super();
         this.lookup = MethodHandles.lookup();
         this.callbacks = new ConcurrentHashMap<>();
@@ -56,7 +56,7 @@ final class CallbackGenerator {
      */
     MethodHandle initCallback(final Parameter param, final Object owner) throws IllegalAccessException {
         final MethodHandle handle = initCallback(param);
-        return Objects.nonNull(handle) ? handle.bindTo(owner) : handle;
+        return Objects.nonNull(handle) && Objects.nonNull(owner) ? handle.bindTo(owner) : handle;
     }
 
     /**
@@ -80,8 +80,10 @@ final class CallbackGenerator {
      * @throws IllegalAccessException
      */
     MethodHandle initCallback(final Class<?> clazz, final Callback callback) throws IllegalAccessException {
-        if (Objects.isNull(callback)) return null;
-        return initCallback(clazz, callback.name());
+        if (Objects.isNull(callback)) {
+            return null;
+        }
+        return initCallback(clazz, callback.value());
     }
 
     /**
@@ -96,7 +98,7 @@ final class CallbackGenerator {
     MethodHandle initCallback(final Class<?> clazz, final String name) throws IllegalAccessException {
         final Collection<Method> list = getCallbacks(clazz);
         final Optional<Method> method = list.stream()
-                .filter(m -> m.getAnnotation(Callback.class).name().equals(name))
+                .filter(m -> m.getAnnotation(Callback.class).value().equals(name))
                 .findFirst().or(() -> list.stream().findFirst());
         return method.isPresent() ? lookup.unreflect(method.get()) : null;
     }
@@ -117,6 +119,11 @@ final class CallbackGenerator {
         return list;
     }
 
+    /**
+     * Constructor helper
+     *
+     * @return
+     */
     public static CallbackGenerator instance() {
         return new CallbackGenerator();
     }

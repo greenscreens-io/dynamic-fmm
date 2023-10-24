@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2023 Green Screens Ltd.
+* Copyright (C) 2015, 2023 Green Screens Ltd.
  */
 package io.greenscreens.foreign;
 
@@ -31,7 +31,7 @@ final class ExternalInvocationHandler implements InvocationHandler {
      *
      * @param caller
      */
-    public ExternalInvocationHandler(final Class<?> caller) {
+    ExternalInvocationHandler(final Class<?> caller) {
         super();
         this.caller = caller;
         this.arena = Arena.ofShared();
@@ -40,34 +40,6 @@ final class ExternalInvocationHandler implements InvocationHandler {
         this.cache = ForeignGenerator.generate(symbolLookup, caller);
         this.hook = new Thread(() -> ExternalInvocationHandler.this.close());
         Runtime.getRuntime().addShutdownHook(hook);
-    }
-
-    /**
-     * Auto release all resources. Automatically called when JVM exits.
-     */
-    private void close() {
-        if (Objects.nonNull(arena)) {
-            arena.close();
-        }
-    }
-
-    /**
-     * Normalize external library name. If extension is not specified, proper
-     * one will be set based on currently used OS.
-     *
-     * @return
-     */
-    private String findLib() {
-        final External annotation = caller.getAnnotation(External.class);
-        String lib = Helpers.normalize(annotation.name());
-        if (lib.length() == 0) {
-            lib = Helpers.normalize(System.getProperties().getProperty(annotation.property()));
-        }
-        if (Helpers.isWin()) {
-            return lib.endsWith(".dll") ? lib : lib + ".dll";
-        } else {
-            return lib.endsWith(".so") ? lib : lib + ".so";
-        }
     }
 
     /**
@@ -81,7 +53,7 @@ final class ExternalInvocationHandler implements InvocationHandler {
         final MethodHandle handle = cache.get(method);
         final Object[] arguments = wrap(method, args);
         final Object ret = Objects.isNull(args) ? handle.invoke() : handle.invoke(arguments);
-        return unwrap(method, ret);
+        return unwrap(method, ret, args);
     }
 
     /**
@@ -92,8 +64,9 @@ final class ExternalInvocationHandler implements InvocationHandler {
      * @param ret Unwrapped data type
      * @return
      */
-    private Object unwrap(final Method method, final Object ret) {
-        return Converters.fromExternal(method.getReturnType(), ret, arena);
+    private Object unwrap(final Method method, final Object ret, final Object[] args) {
+        final int retLen = length(method, args);
+        return Converters.fromExternal(method.getReturnType(), ret, retLen, arena);
     }
 
     /**
@@ -132,6 +105,49 @@ final class ExternalInvocationHandler implements InvocationHandler {
         } while (i < args.length && i < params.length);
 
         return arguments;
+    }
+
+    /**
+     * Return data type length of specified
+     *
+     * @param method
+     * @param args
+     * @return
+     */
+    private int length(final Method method, final Object[] args) {
+        final Size size = method.getAnnotation(Size.class);
+        if (Objects.isNull(size)) {
+            return 0;
+        }
+        return (size.index() > -1) ? (int) args[size.index()] : size.value();
+    }
+
+    /**
+     * Normalize external library name. If extension is not specified, proper
+     * one will be set based on currently used OS.
+     *
+     * @return
+     */
+    private String findLib() {
+        final External annotation = caller.getAnnotation(External.class);
+        String lib = Helpers.normalize(annotation.name());
+        if (lib.length() == 0) {
+            lib = Helpers.normalize(System.getProperties().getProperty(annotation.property()));
+        }
+        if (Helpers.isWin()) {
+            return lib.endsWith(".dll") ? lib : lib + ".dll";
+        } else {
+            return lib.endsWith(".so") ? lib : lib + ".so";
+        }
+    }
+
+    /**
+     * Auto release all resources. Automatically called when JVM exits.
+     */
+    private void close() {
+        if (Objects.nonNull(arena)) {
+            arena.close();
+        }
     }
 
 }

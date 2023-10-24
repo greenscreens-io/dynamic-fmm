@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2023 Green Screens Ltd.
+* Copyright (C) 2015, 2023 Green Screens Ltd.
  */
 package io.greenscreens.foreign;
 
@@ -58,7 +58,11 @@ enum Helpers {
      */
     public static String fromWideString(final MemorySegment wide) {
         final CharBuffer cb = wide.asByteBuffer().order(ByteOrder.nativeOrder()).asCharBuffer();
-        while (cb.hasRemaining()) if (cb.get() == 0) break;
+        while (cb.hasRemaining()) {
+            if (cb.get() == 0) {
+                break;
+            }
+        }
         return cb.limit(cb.position()).rewind().toString();
     }
 
@@ -84,7 +88,9 @@ enum Helpers {
     public static boolean[] toBoolean(final byte[] bytes) {
         final boolean[] bits = new boolean[bytes.length];
         int i = bytes.length;
-        while (--i >= 0) bits[i] = (bytes[i] & 0x01) == 1;
+        while (--i >= 0) {
+            bits[i] = (bytes[i] & 0x01) == 1;
+        }
         return bits;
     }
 
@@ -97,7 +103,9 @@ enum Helpers {
     public static byte[] toBytes(final boolean[] bits) {
         final byte[] bytes = new byte[bits.length];
         int i = bits.length;
-        while (--i >= 0) bytes[i] = (byte) (bits[i] ? 1 : 0);
+        while (--i >= 0) {
+            bytes[i] = (byte) (bits[i] ? 1 : 0);
+        }
         return bytes;
     }
 
@@ -108,7 +116,9 @@ enum Helpers {
      * @return
      */
     static Object toPrimitive(final Object obj) {
-        if (Objects.isNull(obj)) return null;
+        if (Objects.isNull(obj)) {
+            return null;
+        }
         return switch (obj) {
             case Byte b ->
                 b.byteValue();
@@ -148,9 +158,7 @@ enum Helpers {
      * @return
      */
     static Collection<Method> getCallbacks(final Class<?> clazz) {
-        return Stream.of(clazz.getMethods())
-                .filter(m -> Objects.nonNull(m.getAnnotation(Callback.class)))
-                .collect(Collectors.toList());
+        return Stream.of(clazz.getMethods()).filter(m -> Objects.nonNull(m.getAnnotation(Callback.class))).collect(Collectors.toList());
     }
 
     /**
@@ -161,10 +169,7 @@ enum Helpers {
      */
     static int variadic(final Method method) {
         final AtomicInteger id = new AtomicInteger(-1);
-        return Stream.of(method.getParameters())
-                .map(p -> p.isVarArgs() ? id.incrementAndGet() : -1)
-                .findFirst()
-                .orElse(-1);
+        return Stream.of(method.getParameters()).map(p -> p.isVarArgs() ? id.incrementAndGet() : -1).findFirst().orElse(-1);
     }
 
 }

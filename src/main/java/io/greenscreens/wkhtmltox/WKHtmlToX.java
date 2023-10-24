@@ -53,9 +53,9 @@ public interface WKHtmlToX {
 
     public void wkhtmltoimage_set_error_callback(final MemorySegment converter, @Callback final IStringCallback callback) throws Throwable;
 
-    public void wkhtmltoimage_set_progress_changed_callback(final MemorySegment converter, @Callback(name = "callback") final IIntCallback callback) throws Throwable;
+    public void wkhtmltoimage_set_progress_changed_callback(final MemorySegment converter, @Callback("callback") final IIntCallback callback) throws Throwable;
 
-    public void wkhtmltoimage_set_finished_callback(final MemorySegment converter, @Callback(name = "callback") final IIntCallback callback) throws Throwable;
+    public void wkhtmltoimage_set_finished_callback(final MemorySegment converter, @Callback("callback") final IIntCallback callback) throws Throwable;
 
     // PDF ENGINE
 
@@ -105,8 +105,8 @@ public interface WKHtmlToX {
 
     public void wkhtmltopdf_set_error_callback(final MemorySegment converter, @Callback final IStringCallback callback) throws Throwable;
 
-    public void wkhtmltopdf_set_progress_changed_callback(final MemorySegment converter, @Callback(name = "callback") final IIntCallback callback) throws Throwable;
+    public void wkhtmltopdf_set_progress_changed_callback(final MemorySegment converter, @Callback("callback") final IIntCallback callback) throws Throwable;
 
-    public void wkhtmltopdf_set_finished_callback(final MemorySegment converter, @Callback(name = "callback") final IIntCallback callback) throws Throwable;
+    public void wkhtmltopdf_set_finished_callback(final MemorySegment converter, @Callback("callback") final IIntCallback callback) throws Throwable;
 
 }
