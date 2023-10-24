@@ -184,10 +184,10 @@ enum ForeignGenerator {
     static MemoryLayout[] tolayouts(final MethodHandle handle) {
         final Class<?>[] params = handle.type().parameterArray();
         final MemoryLayout[] args = new MemoryLayout[params.length];
-        int i = 0;
-        do {
-            args[i] = Converters.toLayout(params[i]);
-        } while (++i < params.length);
+        int i = -1;
+        while (++i < params.length) {
+            args[i] = Converters.toLayout(params[i].getType());
+        } 
         return args;
     }
 
