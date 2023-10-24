@@ -47,7 +47,7 @@ enum Helpers {
      * @return
      */
     static Class<?> toType(final Class<?> type) {
-        return type.isArray() ? type.arrayType() : type;
+        return type.isArray() ? type.arrayType().componentType() : type;
     }
 
     /**
