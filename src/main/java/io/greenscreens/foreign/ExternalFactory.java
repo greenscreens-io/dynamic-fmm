@@ -1,6 +1,6 @@
 /*
 * Copyright (C) 2015, 2023 Green Screens Ltd.
- */
+*/
 package io.greenscreens.foreign;
 
 import java.lang.reflect.Proxy;
@@ -21,7 +21,7 @@ public enum ExternalFactory {
     @SuppressWarnings("unchecked")
     public static <T> T create(final Class<T> caller) {
         final ExternalInvocationHandler handler = new ExternalInvocationHandler(caller);
-        return (T) Proxy.newProxyInstance(caller.getClassLoader(), new Class<?>[]{caller}, handler);
+        return (T) Proxy.newProxyInstance(caller.getClassLoader(), new Class<?>[] { caller }, handler);
     }
 
 }

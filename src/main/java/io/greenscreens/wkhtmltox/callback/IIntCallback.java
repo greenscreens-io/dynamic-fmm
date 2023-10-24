@@ -5,7 +5,7 @@ package io.greenscreens.wkhtmltox.callback;
 
 import java.lang.foreign.MemorySegment;
 
-import io.greenscreens.foreign.Callback;
+import io.greenscreens.foreign.annotations.Callback;
 
 /**
  * Processing callback implementation

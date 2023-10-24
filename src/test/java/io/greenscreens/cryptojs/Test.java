@@ -3,8 +3,6 @@
 */
 package io.greenscreens.cryptojs;
 
-import java.lang.foreign.MemorySegment;
-
 import io.greenscreens.foreign.ExternalFactory;
 import io.greenscreens.util.ByteUtil;
 
@@ -18,38 +16,59 @@ public enum Test {
     public static void main(String[] args) {
 
         final CryptoJS crypto = ExternalFactory.create(CryptoJS.class);
+        /*
         test_random(crypto);
         test_md5(crypto);
         test_sha1(crypto);
+        */
+        test_rsa(crypto);
+    }
+    
+    static void test_rsa(final CryptoJS crypto) {
+        final String id = crypto.RSA_Generate_Key(1024, 65535);
+        System.out.println(crypto.IsError());
+        System.out.println(crypto.GetError());
+        System.out.println(id);
+        final boolean ok = crypto.RSA_Has_Key(id, true);
+        System.out.println(ok);
+        System.out.println(crypto.RSA_Export_Private_Key_JWK(id));
+        System.out.println(crypto.RSA_Export_Private_Key_Pem(id));
+        System.out.println(crypto.RSA_Export_Public_Key_Pem(id));
+        System.out.println(crypto.RSA_Export_Public_Key_Pem(id));
+        
     }
     
     static void test_random(final CryptoJS crypto ){
         
-        /* makes memory leak, we have to call / register FreePointer
         final byte[] seg = crypto.Random(10);
         System.out.println(ByteUtil.bytesToHex(seg));
+        /* when @GarbageCollector not used, and return type is auto translated from memorySegment (pointer )to java type  
+         * Java value create a foreign pointer memory leak, so we have to manually release the pointer (remote MemorySegment) 
+         * by calling foreign FreePointer
          */
+        /*
         final MemorySegment seg = crypto.Random(10);
         System.out.println(crypto.IsError());
         System.out.println(crypto.GetError());
         //System.out.println(ByteUtil.bufferToHex(seg.reinterpret(10).asByteBuffer()));
         System.out.println(ByteUtil.bufferToHex(seg.asByteBuffer()));
         crypto.FreePointer(seg);
+         */
     }
     
     static void test_md5(final CryptoJS crypto ){        
-        final MemorySegment ret = crypto.MD5(data.getBytes(), data.length());
-        System.out.println(ByteUtil.bufferToHex(ret.asByteBuffer()));
-        crypto.FreePointer(ret);
+        final byte[] ret = crypto.MD5(data.getBytes(), data.length());
+        System.out.println(ByteUtil.bytesToHex(ret));
+        //crypto.FreePointer(ret);
         
         final byte[] r = ByteUtil.digest("MD5", data.getBytes());
         System.out.println(ByteUtil.bytesToHex(r));
     }
     
     static void test_sha1(final CryptoJS crypto ){        
-        final MemorySegment ret = crypto.Sha_1(data.getBytes(), data.length());
-        System.out.println(ByteUtil.bufferToHex(ret.asByteBuffer()));
-        crypto.FreePointer(ret);
+        final byte[] ret = crypto.Sha_1(data.getBytes(), data.length());
+        System.out.println(ByteUtil.bytesToHex(ret));
+        //crypto.FreePointer(ret);
         
         final byte[] r = ByteUtil.digest("SHA1", data.getBytes());
         System.out.println(ByteUtil.bytesToHex(r));

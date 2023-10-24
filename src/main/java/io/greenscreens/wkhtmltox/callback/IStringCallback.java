@@ -8,7 +8,7 @@ import java.lang.foreign.MemorySegment;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
 
-import io.greenscreens.foreign.Callback;
+import io.greenscreens.foreign.annotations.Callback;
 
 /**
  * Callback function definition

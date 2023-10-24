@@ -5,9 +5,9 @@ package io.greenscreens.wkhtmltox;
 
 import java.lang.foreign.MemorySegment;
 
-import io.greenscreens.foreign.Callback;
-import io.greenscreens.foreign.External;
-import io.greenscreens.foreign.Trivial;
+import io.greenscreens.foreign.annotations.Callback;
+import io.greenscreens.foreign.annotations.External;
+import io.greenscreens.foreign.annotations.Trivial;
 import io.greenscreens.wkhtmltox.callback.IIntCallback;
 import io.greenscreens.wkhtmltox.callback.IStringCallback;
 
