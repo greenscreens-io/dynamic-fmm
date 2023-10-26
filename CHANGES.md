@@ -2,6 +2,7 @@
 ## v1.1.0 (TBD)
  - Added @Trivial annotation to support trivial method optimizations 
  - Added @Size annotation to support return data size
+ - Added @GarbageCollector for automatic remote pointer release 
  - Refactor @Callback annottation - simplification
  - Support for primitive type arrays 
  - Support for primitive type class 
