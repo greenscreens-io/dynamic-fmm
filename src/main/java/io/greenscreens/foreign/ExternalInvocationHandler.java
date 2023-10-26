@@ -1,6 +1,6 @@
 /*
 * Copyright (C) 2015, 2023 Green Screens Ltd.
-*/
+ */
 package io.greenscreens.foreign;
 
 import java.lang.foreign.Arena;
@@ -36,7 +36,7 @@ final class ExternalInvocationHandler implements InvocationHandler {
 
     /**
      * Main constructor, initialize Interface wrapper for remote library
-     * 
+     *
      * @param caller
      */
     ExternalInvocationHandler(final Class<?> caller) {
@@ -50,11 +50,11 @@ final class ExternalInvocationHandler implements InvocationHandler {
         this.hook = new Thread(() -> ExternalInvocationHandler.this.close());
         Runtime.getRuntime().addShutdownHook(hook);
     }
-    
-    private Map<String,MethodHandle> filterGC() {
+
+    private Map<String, MethodHandle> filterGC() {
         return cache.entrySet().stream()
-        .filter(e -> e.getKey().isAnnotationPresent(GarbageCollector.class))
-        .collect(Collectors.toMap(k -> k.getKey().getAnnotation(GarbageCollector.class).value(), v -> v.getValue()));
+                .filter(e -> e.getKey().isAnnotationPresent(GarbageCollector.class))
+                .collect(Collectors.toMap(k -> k.getKey().getAnnotation(GarbageCollector.class).value(), v -> v.getValue()));
     }
 
     /**
@@ -62,7 +62,9 @@ final class ExternalInvocationHandler implements InvocationHandler {
      */
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-        if (!cache.containsKey(method)) throw UnavailableException.create();
+        if (!cache.containsKey(method)) {
+            throw UnavailableException.create();
+        }
         final MethodHandle handle = cache.get(method);
         final Object[] arguments = wrap(method, args);
         final Object ret = Objects.isNull(args) ? handle.invoke() : handle.invoke(arguments);
@@ -70,33 +72,33 @@ final class ExternalInvocationHandler implements InvocationHandler {
     }
 
     /**
-     * Unwrap result with support for array of primitive types or string Converts
-     * MemorySegment to actual type if supported.
-     * 
+     * Unwrap result with support for array of primitive types or string
+     * Converts MemorySegment to actual type if supported.
+     *
      * @param method
-     * @param ret    Unwrapped data type
+     * @param ret Unwrapped data type
      * @return
-     * @throws Throwable 
+     * @throws Throwable
      */
     private Object unwrap(final Object owner, final Method method, final Object ret, final Object[] args) throws Throwable {
-        final int retLen = length(method, args);        
+        final int retLen = length(method, args);
         final Object o = Converters.fromExternal(method.getReturnType(), ret, retLen, arena);
         if (ret instanceof MemorySegment && !(o instanceof MemorySegment)) {
-         final GarbageCollector gc = method.getAnnotation(GarbageCollector.class);         
-         final String key = Objects.nonNull(gc) ? gc.value() : "";
-         final MethodHandle gcHandle = collectors.get(key);
-         if (Objects.nonNull(gcHandle)) {
-             gcHandle.invoke(new Object[] {ret});
-         } else {
-             System.err.println("!! Warning !! memory leak might happen in foreign functions when mapping a pointer to the Java type and not releaseing the remote pointer!");
-         }
+            final GarbageCollector gc = method.getAnnotation(GarbageCollector.class);
+            final String key = Objects.nonNull(gc) ? gc.value() : "";
+            final MethodHandle gcHandle = collectors.get(key);
+            if (Objects.nonNull(gcHandle)) {
+                gcHandle.invoke(new Object[]{ret});
+            } else {
+                System.err.println("!! Warning !! memory leak might happen in foreign functions when mapping a pointer to the Java type and not releaseing the remote pointer!");
+            }
         }
         return o;
     }
 
     /**
      * Wrap arguments into a proper types for foreign function calls
-     * 
+     *
      * @param method
      * @param args
      * @return
@@ -104,7 +106,9 @@ final class ExternalInvocationHandler implements InvocationHandler {
      */
     private Object[] wrap(final Method method, final Object[] args) throws IllegalAccessException {
 
-        if (Objects.isNull(args)) return args;
+        if (Objects.isNull(args)) {
+            return args;
+        }
 
         final Parameter[] params = method.getParameters();
         final Object[] arguments = new Object[args.length];
@@ -129,30 +133,34 @@ final class ExternalInvocationHandler implements InvocationHandler {
 
         return arguments;
     }
-    
+
     /**
      * Return data type length of specified
+     *
      * @param method
      * @param args
      * @return
      */
-    private int length(final Method method, final Object[] args){
+    private int length(final Method method, final Object[] args) {
         final Size size = method.getAnnotation(Size.class);
-        if (Objects.isNull(size)) return 0;
-        return (size.index() > -1) ? (int)args[size.index()] : size.value();
+        if (Objects.isNull(size)) {
+            return 0;
+        }
+        return (size.index() > -1) ? (int) args[size.index()] : size.value();
     }
 
     /**
-     * Normalize external library name. If extension is not specified, proper one
-     * will be set based on currently used OS.
-     * 
+     * Normalize external library name. If extension is not specified, proper
+     * one will be set based on currently used OS.
+     *
      * @return
      */
     private String findLib() {
         final External annotation = caller.getAnnotation(External.class);
         String lib = Helpers.normalize(annotation.name());
-        if (lib.length() == 0)
+        if (lib.length() == 0) {
             lib = Helpers.normalize(System.getProperties().getProperty(annotation.property()));
+        }
         if (Helpers.isWin()) {
             return lib.endsWith(".dll") ? lib : lib + ".dll";
         } else {
@@ -164,7 +172,9 @@ final class ExternalInvocationHandler implements InvocationHandler {
      * Auto release all resources. Automatically called when JVM exits.
      */
     private void close() {
-        if (Objects.nonNull(arena)) arena.close();
+        if (Objects.nonNull(arena)) {
+            arena.close();
+        }
     }
 
 }

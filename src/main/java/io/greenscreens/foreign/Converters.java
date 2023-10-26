@@ -52,7 +52,7 @@ enum Converters {
 
     /**
      * Convert method argument from java to format for foreign function call
-     * 
+     *
      * @param param
      * @param data
      * @param arena
@@ -64,7 +64,7 @@ enum Converters {
 
     /**
      * Convert method argument from java to format for foreign function call
-     * 
+     *
      * @param klass
      * @param data
      * @param arena
@@ -74,7 +74,9 @@ enum Converters {
 
         final boolean isArray = klass.isArray();
         final Class<?> type = Helpers.toType(klass);
-        if (!isArray && type.isPrimitive()) return data;
+        if (!isArray && type.isPrimitive()) {
+            return data;
+        }
 
         if (byte[].class.equals(klass)) {
             return arena.allocateArray(ValueLayout.JAVA_BYTE, Objects.isNull(data) ? new byte[0] : (byte[]) data);
@@ -135,21 +137,23 @@ enum Converters {
 
     /**
      * Convert data received from foreign function call to Java data type
-     * 
+     *
      * @param klass
      * @param data
      * @param arena
      * @return
      */
     static Object fromExternal(final Class<?> klass, final Object data, final int length, final Arena arena) {
-        if (Objects.isNull(data)) return null;
+        if (Objects.isNull(data)) {
+            return null;
+        }
         final boolean isPointer = data instanceof MemorySegment;
         return isPointer ? fromExternal(klass, (MemorySegment) data, length, arena) : data;
     }
 
     /**
      * Convert "pointer" received from foreign function call to Java data type
-     * 
+     *
      * @param klass
      * @param data
      * @param arena
@@ -157,13 +161,19 @@ enum Converters {
      */
     static Object fromExternal(final Class<?> klass, final MemorySegment pointer, final int length, final Arena arena) {
 
-        if (Objects.isNull(pointer)) return null;
+        if (Objects.isNull(pointer)) {
+            return null;
+        }
 
         final Class<?> type = Helpers.toType(klass);
-        if (Helpers.isVoid(type)) return pointer;
-        
+        if (Helpers.isVoid(type)) {
+            return pointer;
+        }
+
         final MemorySegment data = length > 0 ? pointer.reinterpret(length) : pointer;
-        if (MemorySegment.class.equals(klass)) return data;
+        if (MemorySegment.class.equals(klass)) {
+            return data;
+        }
 
         if (byte[].class.equals(klass)) {
             return data.toArray(ValueLayout.JAVA_BYTE);

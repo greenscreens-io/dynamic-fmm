@@ -1,6 +1,6 @@
 /*
 * Copyright (C) 2015, 2023 Green Screens Ltd.
-*/
+ */
 package io.greenscreens.foreign;
 
 import java.lang.foreign.MemorySegment;
@@ -34,7 +34,7 @@ enum Helpers {
 
     /**
      * Check if class is void (method return type)
-     * 
+     *
      * @param type
      * @return
      */
@@ -44,7 +44,7 @@ enum Helpers {
 
     /**
      * Convert class to base type. If it is array, return array type.
-     * 
+     *
      * @param type
      * @return
      */
@@ -54,20 +54,23 @@ enum Helpers {
 
     /**
      * UTF16 support
-     * 
+     *
      * @param wide
      * @return
      */
     public static String fromWideString(final MemorySegment wide) {
         final CharBuffer cb = wide.asByteBuffer().order(ByteOrder.nativeOrder()).asCharBuffer();
-        while (cb.hasRemaining())
-            if (cb.get() == 0) break;
+        while (cb.hasRemaining()) {
+            if (cb.get() == 0) {
+                break;
+            }
+        }
         return cb.limit(cb.position()).rewind().toString();
     }
 
     /**
      * UTF16 support
-     * 
+     *
      * @param s
      * @param allocator
      * @return
@@ -80,54 +83,69 @@ enum Helpers {
 
     /**
      * Boolean array support
-     * 
+     *
      * @param bytes
      * @return
      */
     public static boolean[] toBoolean(final byte[] bytes) {
         final boolean[] bits = new boolean[bytes.length];
         int i = bytes.length;
-        while (--i >= 0) bits[i] = (bytes[i] & 0x01) == 1;
+        while (--i >= 0) {
+            bits[i] = (bytes[i] & 0x01) == 1;
+        }
         return bits;
     }
 
     /**
      * Boolean array support
-     * 
+     *
      * @param bits
      * @return
      */
     public static byte[] toBytes(final boolean[] bits) {
         final byte[] bytes = new byte[bits.length];
         int i = bits.length;
-        while (--i >= 0) bytes[i] = (byte) (bits[i] ? 1 : 0);
+        while (--i >= 0) {
+            bytes[i] = (byte) (bits[i] ? 1 : 0);
+        }
         return bytes;
     }
 
     /**
      * Convert primitive wrapper class instance to a primitive value
-     * 
+     *
      * @param obj
      * @return
      */
     static Object toPrimitive(final Object obj) {
-        if (Objects.isNull(obj)) return null;
+        if (Objects.isNull(obj)) {
+            return null;
+        }
         return switch (obj) {
-            case Byte b -> b.byteValue();
-            case Boolean o -> o.booleanValue();
-            case Character c -> c.charValue();
-            case Double d -> d.doubleValue();
-            case Float f -> f.floatValue();
-            case Integer i -> i.intValue();
-            case Long l -> l.longValue();
-            case Short s -> s.shortValue();
-            default -> obj;
+            case Byte b ->
+                b.byteValue();
+            case Boolean o ->
+                o.booleanValue();
+            case Character c ->
+                c.charValue();
+            case Double d ->
+                d.doubleValue();
+            case Float f ->
+                f.floatValue();
+            case Integer i ->
+                i.intValue();
+            case Long l ->
+                l.longValue();
+            case Short s ->
+                s.shortValue();
+            default ->
+                obj;
         };
     }
 
     /**
      * Normalize string, preventing null
-     * 
+     *
      * @param val
      * @return
      */
@@ -137,7 +155,7 @@ enum Helpers {
 
     /**
      * Find all methods marked as callbacks
-     * 
+     *
      * @param clazz
      * @return
      */
@@ -147,7 +165,7 @@ enum Helpers {
 
     /**
      * Find index of a first variadic argument; -1 if none
-     * 
+     *
      * @param method
      * @return
      */

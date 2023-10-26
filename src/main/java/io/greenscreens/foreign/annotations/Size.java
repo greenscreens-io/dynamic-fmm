@@ -12,17 +12,19 @@ import java.lang.annotation.Target;
  * Annotation to identify array type size to be returned
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD})
+@Target({ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD})
 public @interface Size {
 
     /**
      * Fixed data return size
+     *
      * @return
      */
     int value() default 0;
-    
+
     /**
      * Parameter index containing return data size
+     *
      * @return
      */
     int index() default -1;

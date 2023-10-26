@@ -58,7 +58,6 @@ public interface WKHtmlToX {
     public void wkhtmltoimage_set_finished_callback(final MemorySegment converter, @Callback("callback") final IIntCallback callback) throws Throwable;
 
     // PDF ENGINE
-
     @Trivial
     public String wkhtmltopdf_version() throws Throwable;
 

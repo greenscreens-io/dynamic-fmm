@@ -33,9 +33,9 @@ final class CallbackGenerator {
     }
 
     /**
-     * Generate MethodHandle from Method argument descriptor Parameter and bind it
-     * to the owner instance
-     * 
+     * Generate MethodHandle from Method argument descriptor Parameter and bind
+     * it to the owner instance
+     *
      * @param param
      * @param owner
      * @param arena Temporary Arena.ofAuto allocation provided from above
@@ -48,9 +48,9 @@ final class CallbackGenerator {
     }
 
     /**
-     * Generate MethodHandle from Method argument descriptor Parameter and bind it
-     * to the owner instance
-     * 
+     * Generate MethodHandle from Method argument descriptor Parameter and bind
+     * it to the owner instance
+     *
      * @param param
      * @param owner
      * @return
@@ -63,7 +63,7 @@ final class CallbackGenerator {
 
     /**
      * Generate MethodHandle from Method argument descriptor Parameter
-     * 
+     *
      * @param param
      * @return
      * @throws IllegalAccessException
@@ -75,23 +75,25 @@ final class CallbackGenerator {
     /**
      * Find Class Method that matches Callback annotation , and generate
      * MethodHandle
-     * 
+     *
      * @param clazz
      * @param callback
      * @return
      * @throws IllegalAccessException
      */
     MethodHandle initCallback(final Class<?> clazz, final Callback callback) throws IllegalAccessException {
-        if (Objects.isNull(callback)) return null;
+        if (Objects.isNull(callback)) {
+            return null;
+        }
         return initCallback(clazz, callback.value());
     }
 
     /**
      * Find a proper method used as a callback and convert that method into a
      * "pointer" - a MethodHandle
-     * 
+     *
      * @param clazz Interface containing a callback method
-     * @param name  Name of the
+     * @param name Name of the
      * @return
      * @throws IllegalAccessException
      */
@@ -105,7 +107,7 @@ final class CallbackGenerator {
 
     /**
      * Find all Interface @Callback annotated methods and cache them per class
-     * 
+     *
      * @param clazz
      * @return
      */
@@ -121,6 +123,7 @@ final class CallbackGenerator {
 
     /**
      * Constructor helper
+     *
      * @return
      */
     public static CallbackGenerator instance() {
