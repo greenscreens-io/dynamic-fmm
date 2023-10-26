@@ -9,6 +9,7 @@
  - Support for variadic arguments
  - Improved data handling
  - Code refactoring
+ - Added demo for GO compiled DLL
 
 ## v1.0.0 (19.10.2023)
 
