@@ -8,8 +8,6 @@ import java.lang.foreign.MemorySegment;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
 
-import io.greenscreens.util.Util;
-
 /**
  * Simple logging callback
  */
@@ -30,7 +28,7 @@ final class StringCallback implements IStringCallback {
             final String msg = value.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
             result(msg);
         } catch (Exception e) {
-            final String msg = Util.toMessage(e);
+            final String msg = e.getMessage();
             logger.error(msg);
             logger.debug(msg, e);
         }

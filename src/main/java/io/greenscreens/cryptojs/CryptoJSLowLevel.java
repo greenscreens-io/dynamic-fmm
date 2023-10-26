@@ -118,7 +118,7 @@ public interface CryptoJSLowLevel {
 
     MemorySegment RSA_Export_Private_Key_Pem(final String id);
 
-    MemorySegment RSA_Export_Private_Key_JWK(final String id);
+    MemorySegment RSA_Export_Private_Key_Jwk(final String id);
 
     MemorySegment RSA_Export_Private_Key_Raw(final String id);
 

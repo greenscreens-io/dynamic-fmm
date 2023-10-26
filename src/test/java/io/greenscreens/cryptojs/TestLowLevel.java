@@ -6,7 +6,7 @@ package io.greenscreens.cryptojs;
 import java.lang.foreign.MemorySegment;
 
 import io.greenscreens.foreign.ExternalFactory;
-import io.greenscreens.util.ByteUtil;
+//import io.greenscreens.util.ByteUtil;
 
 /**
  * Test Green Screens CryptoWasm GO library compiled as Windows dll. 
@@ -51,7 +51,7 @@ public enum TestLowLevel {
         System.out.println(ok);
         
         MemorySegment ret = null;
-        ret = crypto.RSA_Export_Private_Key_JWK(id);
+        ret = crypto.RSA_Export_Private_Key_Jwk(id);
         System.out.println(getString(crypto, ret));
         
         ret = crypto.RSA_Export_Private_Key_Pem(id);
@@ -73,26 +73,26 @@ public enum TestLowLevel {
         
         // use only of @Size not defined
         //System.out.println(ByteUtil.bufferToHex(seg.reinterpret(10).asByteBuffer()));
-        System.out.println(ByteUtil.bufferToHex(seg.asByteBuffer()));
+        //System.out.println(ByteUtil.bufferToHex(seg.asByteBuffer()));
         crypto.FreePointer(seg);
     }
     
     static void test_md5(final CryptoJSLowLevel crypto ) {        
         final MemorySegment ret = crypto.MD5(data.getBytes(), data.length());
-        System.out.println(ByteUtil.bufferToHex(ret.asByteBuffer()));
+        //System.out.println(ByteUtil.bufferToHex(ret.asByteBuffer()));
         crypto.FreePointer(ret);
         
-        final byte[] r = ByteUtil.digest("MD5", data.getBytes());
-        System.out.println(ByteUtil.bytesToHex(r));
+        //final byte[] r = ByteUtil.digest("MD5", data.getBytes());
+        //System.out.println(ByteUtil.bytesToHex(r));
     }
     
     static void test_sha1(final CryptoJSLowLevel crypto ){        
         final MemorySegment ret = crypto.Sha_1(data.getBytes(), data.length());
-        System.out.println(ByteUtil.bufferToHex(ret.asByteBuffer()));
+        //System.out.println(ByteUtil.bufferToHex(ret.asByteBuffer()));
         crypto.FreePointer(ret);
         
-        final byte[] r = ByteUtil.digest("SHA1", data.getBytes());
-        System.out.println(ByteUtil.bytesToHex(r));
+        //final byte[] r = ByteUtil.digest("SHA1", data.getBytes());
+        //System.out.println(ByteUtil.bytesToHex(r));
     }
     
 }
