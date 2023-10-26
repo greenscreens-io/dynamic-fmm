@@ -1,5 +1,5 @@
 
-## v1.1.0 (TBD)
+## v1.1.0 (26.10.2023)
  - Added @Trivial annotation to support trivial method optimizations 
  - Added @Size annotation to support return data size
  - Added @GarbageCollector for automatic remote pointer cleanup 

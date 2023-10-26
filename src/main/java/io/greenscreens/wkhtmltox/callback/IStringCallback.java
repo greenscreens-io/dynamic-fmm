@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2015, 2023 Green Screens Ltd.
- */
+* Copyright (C) 2015, 2023 Green Screens Ltd.
+*/
 package io.greenscreens.wkhtmltox.callback;
 
 import java.lang.foreign.MemorySegment;
@@ -15,6 +15,7 @@ import io.greenscreens.foreign.annotations.Callback;
  */
 public interface IStringCallback {
 
+    // example using unnamed callback
     @Callback
     void callback(final MemorySegment converter, final MemorySegment value);
 

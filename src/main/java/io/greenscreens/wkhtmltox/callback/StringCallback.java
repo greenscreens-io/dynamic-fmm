@@ -1,12 +1,14 @@
 /*
- * Copyright (C) 2015, 2023 Green Screens Ltd.
- */
+* Copyright (C) 2015, 2023 Green Screens Ltd.
+*/
 package io.greenscreens.wkhtmltox.callback;
 
 import java.lang.foreign.MemorySegment;
 
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
+
+import io.greenscreens.util.Util;
 
 /**
  * Simple logging callback
@@ -28,7 +30,7 @@ final class StringCallback implements IStringCallback {
             final String msg = value.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
             result(msg);
         } catch (Exception e) {
-            final String msg = e.getMessage();
+            final String msg = Util.toMessage(e);
             logger.error(msg);
             logger.debug(msg, e);
         }
@@ -37,24 +39,24 @@ final class StringCallback implements IStringCallback {
     @Override
     public void result(String value) {
         switch (level) {
-            case INFO: {
-                logger.info(value);
-                break;
-            }
-            case WARN: {
-                logger.warn(value);
-                break;
-            }
-            case ERROR: {
-                logger.error(value);
-                break;
-            }
-            case DEBUG: {
-                logger.debug(value);
-                break;
-            }
-            default:
-                throw new IllegalArgumentException("Unexpected value: " + level);
+        case INFO: {
+            logger.info(value);
+            break;
+        }
+        case WARN: {
+            logger.warn(value);
+            break;
+        }
+        case ERROR: {
+            logger.error(value);
+            break;
+        }
+        case DEBUG: {
+            logger.debug(value);
+            break;
+        }
+        default:
+            throw new IllegalArgumentException("Unexpected value: " + level);
         }
     }
 
