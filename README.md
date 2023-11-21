@@ -20,10 +20,10 @@ To see how to use it, check Test.java.
 
 ### Quickstart
 
-Define Java Interface with methods representing foreign funcitons.
-All parameters and retur ntypoes are of type MemorySegment (aka pointer) except forprimitive types.
+Define Java Interface with methods representing foreign functions.
+All parameters and return types are of a type MemorySegment (aka pointer) except for primitive types.
 
-Latest change supports primitive type arrays also.
+Latest change support primitive type arrays also.
 
 Example - C/C++ pseudo code
 
