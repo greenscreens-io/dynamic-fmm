@@ -70,4 +70,4 @@ byte[] compressed = instance.compress(6, "Quick brown fox jumps over the lazy do
 NOTE: @Callback can be named and unnamed. When interface contains only a single Callback, named callbacks are not required.
 When iterface contains multiple calllback methods, use named callback to map porper method to foreign function callback argument.
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024
