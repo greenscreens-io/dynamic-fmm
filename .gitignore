@@ -1,4 +1,6 @@
+activate.bat
 target/
 .settings/
 .vscode/
-activate.bat
+.gradle
+build
