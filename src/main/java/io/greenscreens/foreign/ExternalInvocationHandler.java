@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2023 Green Screens Ltd.
+* Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 package io.greenscreens.foreign;
 
@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import io.greenscreens.foreign.annotations.Callback;
@@ -23,7 +24,7 @@ import io.greenscreens.foreign.annotations.Size;
  * Dynamic engine to intercept interface calls and map them to the external
  * library methods.
  */
-final class ExternalInvocationHandler implements InvocationHandler {
+final class ExternalInvocationHandler implements InvocationHandler, AutoCloseable {
 
     private final Thread hook;
     private final Class<?> caller;
@@ -33,6 +34,7 @@ final class ExternalInvocationHandler implements InvocationHandler {
     private final Arena arena;
     private final SymbolLookup symbolLookup;
     private final CallbackGenerator callbacks;
+    private final AtomicBoolean closed = new AtomicBoolean();
 
     /**
      * Main constructor, initialize Interface wrapper for remote library
@@ -47,7 +49,7 @@ final class ExternalInvocationHandler implements InvocationHandler {
         this.symbolLookup = SymbolLookup.libraryLookup(findLib(), arena);
         this.cache = ForeignGenerator.generate(symbolLookup, caller);
         this.collectors = filterGC();
-        this.hook = new Thread(() -> ExternalInvocationHandler.this.close());
+        this.hook = new Thread(() -> ExternalInvocationHandler.this.release());
         Runtime.getRuntime().addShutdownHook(hook);
     }
 
@@ -168,13 +170,16 @@ final class ExternalInvocationHandler implements InvocationHandler {
         }
     }
 
+    private void release() {
+        if (!closed.getAndSet(true)) arena.close();
+    }
+    
     /**
      * Auto release all resources. Automatically called when JVM exits.
      */
-    private void close() {
-        if (Objects.nonNull(arena)) {
-            arena.close();
-        }
+    public void close() {
+        if (!closed.get()) Runtime.getRuntime().removeShutdownHook(hook);
+        release();
     }
 
 }

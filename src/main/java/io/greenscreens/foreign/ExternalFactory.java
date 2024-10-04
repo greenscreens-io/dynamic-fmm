@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2023 Green Screens Ltd.
+* Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 package io.greenscreens.foreign;
 
@@ -12,16 +12,27 @@ public enum ExternalFactory {
     ;
 
     /**
-     * Pass an Interface for its methods to map to the foreign library.
+     * Pass an Interface for it's methods to map to the foreign library.
      * 
      * @param <T>
      * @param caller
      * @return
      */
-    @SuppressWarnings("unchecked")
     public static <T> T create(final Class<T> caller) {
-        final ExternalInvocationHandler handler = new ExternalInvocationHandler(caller);
-        return (T) Proxy.newProxyInstance(caller.getClassLoader(), new Class<?>[]{caller}, handler);
+        return createDynamic(caller).get();
     }
 
+    /**
+     * Pass an Interface for it's methods to map to the foreign library.
+     * This method create reloadable version.  
+     * @param <T>
+     * @param caller
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Instance<T> createDynamic(final Class<T> caller) {
+        final ExternalInvocationHandler handler = new ExternalInvocationHandler(caller);
+        final T t = (T) Proxy.newProxyInstance(caller.getClassLoader(), new Class<?>[] { caller }, handler);
+        return new Instance<T>(t, handler);
+    }
 }

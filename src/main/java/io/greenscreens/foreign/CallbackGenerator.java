@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2023 Green Screens Ltd.
+ * Copyright (C) 2015, 2024 Green Screens Ltd.
  */
 package io.greenscreens.foreign;
 
@@ -82,10 +82,7 @@ final class CallbackGenerator {
      * @throws IllegalAccessException
      */
     MethodHandle initCallback(final Class<?> clazz, final Callback callback) throws IllegalAccessException {
-        if (Objects.isNull(callback)) {
-            return null;
-        }
-        return initCallback(clazz, callback.value());
+        return Objects.isNull(callback) ? null : initCallback(clazz, callback.value());
     }
 
     /**

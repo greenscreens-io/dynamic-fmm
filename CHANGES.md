@@ -1,4 +1,8 @@
 
+## v1.2.0 (04.10.2024)
+ - Added Autoclosable to release Arena instance
+ - Added Instance wrapper to allow external release
+
 ## v1.1.0 (26.10.2023)
  - Added @Trivial annotation to support trivial method optimizations 
  - Added @Size annotation to support return data size
@@ -19,4 +23,4 @@
  - Support for primitive callbacks 
  - Support for primitive pointers
 
-&copy; Green Screens Ltd. 2016 - 2023
+&copy; Green Screens Ltd. 2016 - 2024
