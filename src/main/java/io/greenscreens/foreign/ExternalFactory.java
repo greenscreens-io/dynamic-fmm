@@ -30,7 +30,7 @@ public enum ExternalFactory {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> Instance<T> createDynamic(final Class<T> caller) {
+    public static <T> Instance<T> createClosable(final Class<T> caller) {
         final ExternalInvocationHandler handler = new ExternalInvocationHandler(caller);
         final T t = (T) Proxy.newProxyInstance(caller.getClassLoader(), new Class<?>[] { caller }, handler);
         return new Instance<T>(t, handler);
