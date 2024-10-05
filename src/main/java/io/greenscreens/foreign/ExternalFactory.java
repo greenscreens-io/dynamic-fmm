@@ -19,7 +19,7 @@ public enum ExternalFactory {
      * @return
      */
     public static <T> T create(final Class<T> caller) {
-        return createDynamic(caller).get();
+        return createClosable(caller).get();
     }
 
     /**
