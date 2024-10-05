@@ -3,7 +3,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/greenscreens-io/dynamic-fmm?style=plastic)
 ![GitHub](https://img.shields.io/github/license/greenscreens-io/dynamic-fmm?style=plastic)
 
-![Compile](https://github.com/greenscreens-io/dynamic-fmm/workflows/Compile/badge.svg?branch=master) 
+[![Compile](https://github.com/greenscreens-io/dynamic-fmm/actions/workflows/maven.yml/badge.svg)](https://github.com/greenscreens-io/dynamic-fmm/actions/workflows/maven.yml)
 ![CodeQL](https://github.com/greenscreens-io/dynamic-fmm/workflows/CodeQL/badge.svg)
 
 Java 21 based JEP 454 Foreign Function and Memory API  - Alternative to JNI and JNA
