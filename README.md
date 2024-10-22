@@ -78,6 +78,6 @@ instance.get().close();
 ```
 
 NOTE: @Callback can be named and unnamed. When interface contains only a single Callback, named callbacks are not required.
-When iterface contains multiple calllback methods, use named callback to map porper method to foreign function callback argument.
+When iterface contains multiple calllback methods, use named callback to map proper method to foreign function callback argument.
 
 &copy; Green Screens Ltd. 2016 - 2024
