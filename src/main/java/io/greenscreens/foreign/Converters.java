@@ -79,22 +79,22 @@ enum Converters {
         }
 
         if (byte[].class.equals(klass)) {
-            return arena.allocateArray(ValueLayout.JAVA_BYTE, Objects.isNull(data) ? new byte[0] : (byte[]) data);
+            return arena.allocateFrom(ValueLayout.JAVA_BYTE, Objects.isNull(data) ? new byte[0] : (byte[]) data);
         } else if (boolean[].class.equals(klass)) {
             final byte[] raw = Helpers.toBytes(Objects.isNull(data) ? new boolean[0] : (boolean[]) data);
-            return arena.allocateArray(ValueLayout.JAVA_BYTE, raw);
+            return arena.allocateFrom(ValueLayout.JAVA_BYTE, raw);
         } else if (char[].class.equals(klass)) {
-            return arena.allocateArray(ValueLayout.JAVA_CHAR, Objects.isNull(data) ? new char[0] : (char[]) data);
+            return arena.allocateFrom(ValueLayout.JAVA_CHAR, Objects.isNull(data) ? new char[0] : (char[]) data);
         } else if (double[].class.equals(klass)) {
-            return arena.allocateArray(ValueLayout.JAVA_DOUBLE, Objects.isNull(data) ? new double[0] : (double[]) data);
+            return arena.allocateFrom(ValueLayout.JAVA_DOUBLE, Objects.isNull(data) ? new double[0] : (double[]) data);
         } else if (float[].class.equals(klass)) {
-            return arena.allocateArray(ValueLayout.JAVA_FLOAT, Objects.isNull(data) ? new float[0] : (float[]) data);
+            return arena.allocateFrom(ValueLayout.JAVA_FLOAT, Objects.isNull(data) ? new float[0] : (float[]) data);
         } else if (int[].class.equals(klass)) {
-            return arena.allocateArray(ValueLayout.JAVA_INT, Objects.isNull(data) ? new int[0] : (int[]) data);
+            return arena.allocateFrom(ValueLayout.JAVA_INT, Objects.isNull(data) ? new int[0] : (int[]) data);
         } else if (long[].class.equals(klass)) {
-            return arena.allocateArray(ValueLayout.JAVA_LONG, Objects.isNull(data) ? new long[0] : (long[]) data);
+            return arena.allocateFrom(ValueLayout.JAVA_LONG, Objects.isNull(data) ? new long[0] : (long[]) data);
         } else if (short[].class.equals(klass)) {
-            return arena.allocateArray(ValueLayout.JAVA_SHORT, Objects.isNull(data) ? new short[0] : (short[]) data);
+            return arena.allocateFrom(ValueLayout.JAVA_SHORT, Objects.isNull(data) ? new short[0] : (short[]) data);
 
         } else if (Boolean.class.equals(type)) {
             return ((Boolean) data).booleanValue();
@@ -118,7 +118,7 @@ enum Converters {
         } else if (MethodHandle.class.equals(type)) {
             return ForeignGenerator.toPointer((MethodHandle) data, arena);
         } else if (String.class.equals(type)) {
-            return arena.allocateUtf8String(Helpers.normalize((String) data));
+            return arena.allocateFrom(Helpers.normalize((String) data));
 
         } else if (ByteBuffer.class.isAssignableFrom(type)) {
             final ByteBuffer buffer = (ByteBuffer) data;
@@ -228,7 +228,7 @@ enum Converters {
         } else if (Character.class.isAssignableFrom(type)) {
             return Character.valueOf(data.get(ValueLayout.JAVA_CHAR, 0));
         } else if (String.class.isAssignableFrom(type)) {
-            return data.reinterpret(Integer.MAX_VALUE, arena, null).getUtf8String(0);
+            return data.reinterpret(Integer.MAX_VALUE, arena, null).getString(0);
 
         } else if (ByteBuffer.class.isAssignableFrom(type)) {
             final byte[] raw = (byte[]) fromExternal(byte[].class, data, length, arena);

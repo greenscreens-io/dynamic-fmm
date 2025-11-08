@@ -45,13 +45,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
-		<maven.compiler.version>3.11.0</maven.compiler.version>
+		<maven.compiler.version>3.14.1</maven.compiler.version>
 		<maven.eclipse.plugin>2.10</maven.eclipse.plugin>
-		<maven.install.plugin>3.0.0-M1</maven.install.plugin>
+		<maven.install.plugin>3.1.4</maven.install.plugin>
 		<maven.recources.plugin>3.3.1</maven.recources.plugin>
-		<maven.jar.version>3.2.0</maven.jar.version>
+		<maven.surefire.plugin>3.5.4</maven.surefire.plugin>
+		<maven.jar.version>3.4.2</maven.jar.version>
 		<maven.war.version>3.3.1</maven.war.version>
 		<maven.proguard.version>2.3.1</maven.proguard.version>
+		<slf4j.version>1.7.36</slf4j.version>
 	</properties>
 
 	<build>
@@ -74,11 +76,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.version}</version>
-				<configuration>
-					<release>21</release>
-					<compilerArgs>--enable-preview</compilerArgs>
-					<enablePreview>true</enablePreview>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -88,10 +85,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.1.2</version>
-				<configuration>
-					<argLine>--enable-preview</argLine>
-				</configuration>
+				<version>${maven.surefire.plugin}</version>
 			</plugin>		
 		</plugins>
 	</build>
@@ -100,12 +94,12 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.30</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.30</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 	</dependencies>
 </project>

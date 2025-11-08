@@ -98,7 +98,7 @@ enum ForeignGenerator {
             options[--size] = Linker.Option.firstVariadicArg(id);
         }
         if (isTrivial) {
-            options[--size] = Linker.Option.isTrivial();
+            options[--size] = Linker.Option.critical(true);
         }
         return options;
     }

@@ -5,7 +5,6 @@ package io.greenscreens.foreign;
 
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentAllocator;
-import java.lang.foreign.ValueLayout;
 import java.lang.reflect.Method;
 import java.nio.ByteOrder;
 import java.nio.CharBuffer;
@@ -76,7 +75,8 @@ enum Helpers {
      * @return
      */
     public static MemorySegment toWideString(final String s, final SegmentAllocator allocator) {
-        final MemorySegment ms = allocator.allocateArray(ValueLayout.JAVA_CHAR, s.length() + 1);
+        // final MemorySegment ms = allocator.allocateArray(ValueLayout.JAVA_CHAR, s.length() + 1);
+    	final MemorySegment ms = allocator.allocateFrom(s);
         ms.asByteBuffer().order(ByteOrder.nativeOrder()).asCharBuffer().put(s).put('\0');
         return ms;
     }

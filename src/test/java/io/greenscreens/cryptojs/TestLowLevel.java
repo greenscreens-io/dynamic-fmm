@@ -33,7 +33,7 @@ public enum TestLowLevel {
     
     
     static String getString(final CryptoJSLowLevel crypto, final MemorySegment seg) {
-        final String id = seg.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
+        final String id = seg.reinterpret(Integer.MAX_VALUE).getString(0);
         crypto.FreePointer(seg);
         return id;
     }
@@ -41,7 +41,7 @@ public enum TestLowLevel {
     static void test_rsa(final CryptoJSLowLevel crypto) {
         
         final MemorySegment _id = crypto.RSA_Generate_Key(1024, 65535);
-        final String id = _id.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
+        final String id = _id.reinterpret(Integer.MAX_VALUE).getString(0);
         crypto.FreePointer(_id);
 
         getAndPrintError(crypto);

@@ -25,7 +25,7 @@ final class StringCallback implements IStringCallback {
     @Override
     public void callback(MemorySegment converter, MemorySegment value) {
         try {
-            final String msg = value.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
+            final String msg = value.reinterpret(Integer.MAX_VALUE).getString(0);
             result(msg);
         } catch (Exception e) {
             final String msg = e.getMessage();
