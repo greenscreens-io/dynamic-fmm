@@ -1,5 +1,6 @@
 activate.bat
 target/
+libs/*.dll
 .settings/
 .vscode/
 .gradle

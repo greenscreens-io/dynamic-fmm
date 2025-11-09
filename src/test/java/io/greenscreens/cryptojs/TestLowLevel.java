@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2024 Green Screens Ltd.
+* Copyright (C) 2015, 2025 Green Screens Ltd.
 */
 package io.greenscreens.cryptojs;
 
@@ -11,8 +11,8 @@ import io.greenscreens.foreign.ExternalFactory;
 /**
  * Test Green Screens CryptoWasm GO library compiled as Windows dll. 
  */
-public enum TestLowLevel {
-;
+public class TestLowLevel {
+
     final static String data = "The quick brown fox jumps over the lazy dog";
     
     public static void main(String[] args) {
@@ -51,7 +51,7 @@ public enum TestLowLevel {
         System.out.println(ok);
         
         MemorySegment ret = null;
-        ret = crypto.RSA_Export_Private_Key_Jwk(id);
+        ret = crypto.RSA_Export_Private_Key_JWK(id);
         System.out.println(getString(crypto, ret));
         
         ret = crypto.RSA_Export_Private_Key_Pem(id);

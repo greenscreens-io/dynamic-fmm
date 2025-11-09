@@ -1,6 +1,6 @@
 /*
-* Copyright (C) 2015, 2024 Green Screens Ltd.
- */
+* Copyright (C) 2015, 2025 Green Screens Ltd.
+*/
 package io.greenscreens.foreign;
 
 import java.lang.foreign.Arena;
@@ -37,14 +37,15 @@ enum ForeignGenerator {
      * interface annotated with @Callback is also allowed.
      */
     private final static Class<?>[] ALLOWED_TYPES = {
-        byte.class, boolean.class, char.class, int.class, long.class, float.class, double.class, short.class,
-        Byte.class, Boolean.class, Character.class, Integer.class, Long.class, Float.class, Double.class, Short.class,
-        String.class, MethodHandle.class, MemorySegment.class, void.class, Void.class, ByteBuffer.class, CharBuffer.class,
-        byte[].class, boolean[].class, char[].class, int[].class, long[].class, float[].class, double[].class, short[].class,};
+            byte.class, boolean.class, char.class, int.class, long.class, float.class, double.class, short.class, 
+            Byte.class, Boolean.class, Character.class, Integer.class, Long.class, Float.class, Double.class, Short.class, 
+            String.class, MethodHandle.class, MemorySegment.class, void.class, Void.class, ByteBuffer.class, CharBuffer.class,
+            byte[].class, boolean[].class, char[].class, int[].class, long[].class, float[].class, double[].class, short[].class,
+            };
 
     /**
-     * Generate MetohdHandles from provided Interface, used for foreign
-     * functions call
+     * Generate MetohdHandles from provided Interface, 
+     * used for foreign functions call
      *
      * @param symbolLookup
      * @param type
@@ -83,8 +84,8 @@ enum ForeignGenerator {
     }
 
     /**
-     * Generate foreign function calling options; support for variadic arguments
-     * and performance optimizations
+     * Generate foreign function calling options; 
+     * support for variadic arguments and performance optimizations
      *
      * @param method
      * @return
@@ -94,18 +95,13 @@ enum ForeignGenerator {
         final boolean isTrivial = method.isAnnotationPresent(Trivial.class);
         int size = (isTrivial ? 1 : 0) + (id < 0 ? 0 : 1);
         final Linker.Option[] options = new Linker.Option[size];
-        if (id > -1) {
-            options[--size] = Linker.Option.firstVariadicArg(id);
-        }
-        if (isTrivial) {
-            options[--size] = Linker.Option.critical(true);
-        }
+        if (id > -1) options[--size] = Linker.Option.firstVariadicArg(id);
+        if (isTrivial) options[--size] = Linker.Option.critical(true);
         return options;
     }
 
     /**
-     * Filter out all allowed methods for foreign functions based on
-     * ALLOWED_TYPES
+     * Filter out all allowed methods for foreign functions based on ALLOWED_TYPES
      *
      * @param type
      * @return
@@ -115,8 +111,8 @@ enum ForeignGenerator {
     }
 
     /**
-     * Verify if method is allowed for foreign function mapping. Method return
-     * type and arguments must match one of allowed classes
+     * Verify if method is allowed for foreign function mapping. 
+     * Method return type and arguments must match one of allowed classes
      *
      * @param method
      * @return
@@ -150,8 +146,7 @@ enum ForeignGenerator {
     }
 
     /**
-     * Build a descriptor from an Interface method, required to create a foreign
-     * call
+     * Build a descriptor from an Interface method, required to create a foreign call
      *
      * @param method
      * @return
@@ -173,8 +168,7 @@ enum ForeignGenerator {
     }
 
     /**
-     * Convert Interface method arguments into a signature for foreign library
-     * function
+     * Convert Interface method arguments into a signature for foreign library function
      *
      * @param method A method which arguments are to be converted
      * @return
@@ -192,7 +186,7 @@ enum ForeignGenerator {
     /**
      * Convert callback method arguments into a signature for foreign library
      * function
-     *
+     * 
      * @param handle
      * @return
      */
@@ -213,24 +207,19 @@ enum ForeignGenerator {
      * @return
      */
     static MemorySegment toPointer(final MethodHandle handle, final Arena arena) {
-        if (Objects.isNull(handle)) {
-            return null;
-        }
+        if (Objects.isNull(handle)) return null;
         final FunctionDescriptor descriptor = buildDescriptor(handle);
         return Linker.nativeLinker().upcallStub(handle, descriptor, arena);
     }
 
     /**
-     * Build a descriptor from a callback method, required to create a callback
-     * pointer
+     * Build a descriptor from a callback method, required to create a callback pointer
      *
      * @param handle
      * @return
      */
     static FunctionDescriptor buildDescriptor(final MethodHandle handle) {
-        if (Objects.isNull(handle)) {
-            return null;
-        }
+        if (Objects.isNull(handle)) return null;
         final boolean isVoid = void.class.equals(handle.type().returnType());
         return isVoid ? buildVoidDescriptor(handle) : buildReturnDescriptor(handle);
     }

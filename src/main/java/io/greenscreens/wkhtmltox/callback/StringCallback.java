@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2024 Green Screens Ltd.
+* Copyright (C) 2015, 2025 Green Screens Ltd.
 */
 package io.greenscreens.wkhtmltox.callback;
 
@@ -23,7 +23,7 @@ final class StringCallback implements IStringCallback {
     }
 
     @Override
-    public void callback(MemorySegment converter, MemorySegment value) {
+    public void callback(final MemorySegment converter, final MemorySegment value) {
         try {
             final String msg = value.reinterpret(Integer.MAX_VALUE).getString(0);
             result(msg);
@@ -35,7 +35,7 @@ final class StringCallback implements IStringCallback {
     }
 
     @Override
-    public void result(String value) {
+    public void result(final String value) {
         switch (level) {
         case INFO: {
             logger.info(value);

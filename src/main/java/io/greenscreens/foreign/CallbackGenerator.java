@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2024 Green Screens Ltd.
+ * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
 package io.greenscreens.foreign;
 
@@ -33,8 +33,8 @@ final class CallbackGenerator {
     }
 
     /**
-     * Generate MethodHandle from Method argument descriptor Parameter and bind
-     * it to the owner instance
+     * Generate MethodHandle from Method argument descriptor Parameter
+     * and bind it to the owner instance
      *
      * @param param
      * @param owner
@@ -48,8 +48,8 @@ final class CallbackGenerator {
     }
 
     /**
-     * Generate MethodHandle from Method argument descriptor Parameter and bind
-     * it to the owner instance
+     * Generate MethodHandle from Method argument descriptor Parameter
+     * and bind it to the owner instance
      *
      * @param param
      * @param owner
@@ -120,7 +120,7 @@ final class CallbackGenerator {
 
     /**
      * Constructor helper
-     *
+     * 
      * @return
      */
     public static CallbackGenerator instance() {

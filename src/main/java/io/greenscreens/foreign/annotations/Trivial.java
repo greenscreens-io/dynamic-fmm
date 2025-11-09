@@ -1,6 +1,6 @@
 /*
-* Copyright (C) 2015, 2024 Green Screens Ltd.
- */
+* Copyright (C) 2015, 2025 Green Screens Ltd.
+*/
 package io.greenscreens.foreign.annotations;
 
 import java.lang.annotation.ElementType;
@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * internal optimizations
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD })
 public @interface Trivial {
 
 }

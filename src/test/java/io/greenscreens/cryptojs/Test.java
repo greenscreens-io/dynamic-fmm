@@ -1,16 +1,16 @@
 /*
-* Copyright (C) 2015, 2024 Green Screens Ltd.
+* Copyright (C) 2015, 2025 Green Screens Ltd.
 */
 package io.greenscreens.cryptojs;
 
 import io.greenscreens.foreign.ExternalFactory;
-// import io.greenscreens.util.ByteUtil;
+import io.greenscreens.util.ByteUtil;
 
 /**
  * Test Green Screens CryptoWasm GO library compiled as Windows dll. 
  */
-public enum Test {
-;
+public class Test {
+
     final static String data = "The quick brown fox jumps over the lazy dog";
     
     public static void main(String[] args) {
@@ -38,23 +38,23 @@ public enum Test {
     
     static void test_random(final CryptoJS crypto ){
         final byte[] seg = crypto.Random(10);
-        //System.out.println(ByteUtil.bytesToHex(seg));
+        System.out.println(ByteUtil.bytesToHex(seg));
     }
     
     static void test_md5(final CryptoJS crypto ){        
         final byte[] ret = crypto.MD5(data.getBytes(), data.length());
-        //System.out.println(ByteUtil.bytesToHex(ret));
+        System.out.println(ByteUtil.bytesToHex(ret));
         
-        //final byte[] r = ByteUtil.digest("MD5", data.getBytes());
-        //System.out.println(ByteUtil.bytesToHex(r));
+        final byte[] r = ByteUtil.digest("MD5", data.getBytes());
+        System.out.println(ByteUtil.bytesToHex(r));
     }
     
     static void test_sha1(final CryptoJS crypto ){        
         final byte[] ret = crypto.Sha_1(data.getBytes(), data.length());
-        //System.out.println(ByteUtil.bytesToHex(ret));
+        System.out.println(ByteUtil.bytesToHex(ret));
         
-        //final byte[] r = ByteUtil.digest("SHA1", data.getBytes());
-        //System.out.println(ByteUtil.bytesToHex(r));
+        final byte[] r = ByteUtil.digest("SHA1", data.getBytes());
+        System.out.println(ByteUtil.bytesToHex(r));
     }
     
 }

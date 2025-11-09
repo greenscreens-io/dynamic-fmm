@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2024 Green Screens Ltd.
+* Copyright (C) 2015, 2025 Green Screens Ltd.
 */
 package io.greenscreens.wkhtmltox.callback;
 
@@ -11,7 +11,7 @@ import java.lang.foreign.MemorySegment;
 final class IntCallback implements IIntCallback {
 
     @Override
-    public void callback(MemorySegment converter, int value) {
+    public void callback(final MemorySegment converter, final int value) {
         System.out.println(value);
     }
 

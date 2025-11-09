@@ -1,6 +1,6 @@
 /*
-* Copyright (C) 2015, 2024 Green Screens Ltd.
- */
+* Copyright (C) 2015, 2025 Green Screens Ltd.
+*/
 package io.greenscreens.foreign;
 
 import java.lang.foreign.Arena;
@@ -64,9 +64,7 @@ final class ExternalInvocationHandler implements InvocationHandler, AutoCloseabl
      */
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-        if (!cache.containsKey(method)) {
-            throw UnavailableException.create();
-        }
+        if (!cache.containsKey(method)) throw UnavailableException.create();
         final MethodHandle handle = cache.get(method);
         final Object[] arguments = wrap(method, args);
         final Object ret = Objects.isNull(args) ? handle.invoke() : handle.invoke(arguments);
@@ -86,14 +84,14 @@ final class ExternalInvocationHandler implements InvocationHandler, AutoCloseabl
         final int retLen = length(method, args);
         final Object o = Converters.fromExternal(method.getReturnType(), ret, retLen, arena);
         if (ret instanceof MemorySegment && !(o instanceof MemorySegment)) {
-            final GarbageCollector gc = method.getAnnotation(GarbageCollector.class);
-            final String key = Objects.nonNull(gc) ? gc.value() : "";
-            final MethodHandle gcHandle = collectors.get(key);
-            if (Objects.nonNull(gcHandle)) {
-                gcHandle.invoke(new Object[]{ret});
-            } else {
-                System.err.println("!! Warning !! memory leak might happen in foreign functions when mapping a pointer to the Java type and not releaseing the remote pointer!");
-            }
+         final GarbageCollector gc = method.getAnnotation(GarbageCollector.class);
+         final String key = Objects.nonNull(gc) ? gc.value() : "";
+         final MethodHandle gcHandle = collectors.get(key);
+         if (Objects.nonNull(gcHandle)) {
+             gcHandle.invoke(new Object[] {ret});
+         } else {
+             System.err.println("!! Warning !! memory leak might happen in foreign functions when mapping a pointer to the Java type and not releasing the remote pointer!");
+         }
         }
         return o;
     }
@@ -108,9 +106,7 @@ final class ExternalInvocationHandler implements InvocationHandler, AutoCloseabl
      */
     private Object[] wrap(final Method method, final Object[] args) throws IllegalAccessException {
 
-        if (Objects.isNull(args)) {
-            return args;
-        }
+        if (Objects.isNull(args)) return args;
 
         final Parameter[] params = method.getParameters();
         final Object[] arguments = new Object[args.length];
@@ -145,24 +141,21 @@ final class ExternalInvocationHandler implements InvocationHandler, AutoCloseabl
      */
     private int length(final Method method, final Object[] args) {
         final Size size = method.getAnnotation(Size.class);
-        if (Objects.isNull(size)) {
-            return 0;
-        }
-        return (size.index() > -1) ? (int) args[size.index()] : size.value();
+        if (Objects.isNull(size)) return 0;
+        return (size.index() > -1) ? (int)args[size.index()] : size.value();
     }
 
     /**
-     * Normalize external library name. If extension is not specified, proper
-     * one will be set based on currently used OS.
+     * Normalize external library name. If extension is not specified, 
+     * proper one will be set based on currently used OS.
      *
      * @return
      */
     private String findLib() {
         final External annotation = caller.getAnnotation(External.class);
         String lib = Helpers.normalize(annotation.name());
-        if (lib.length() == 0) {
+        if (lib.length() == 0 )
             lib = Helpers.normalize(System.getProperties().getProperty(annotation.property()));
-        }
         if (Helpers.isWin()) {
             return lib.endsWith(".dll") ? lib : lib + ".dll";
         } else {

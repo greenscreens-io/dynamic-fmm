@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2024 Green Screens Ltd.
+ * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
 package io.greenscreens.foreign.annotations;
 
@@ -15,12 +15,11 @@ import java.lang.annotation.Target;
  * If @Callback is unnamed, first annotated method will be used. It is
  * considered that Interface contain only one method.
  *
- * If @Callback is named, it is considered that Interface contains multiple
- * @Callback annotated methods which names must match-
+ * If @Callback is named, it is considered that Interface contains
+ * multiple @Callback annotated methods which names must match-
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER, ElementType.METHOD})
+@Target({ ElementType.PARAMETER, ElementType.METHOD })
 public @interface Callback {
-
     String value() default "";
 }

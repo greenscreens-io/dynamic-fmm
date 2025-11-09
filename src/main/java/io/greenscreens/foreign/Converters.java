@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2024 Green Screens Ltd.
+ * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
 package io.greenscreens.foreign;
 
@@ -74,9 +74,7 @@ enum Converters {
 
         final boolean isArray = klass.isArray();
         final Class<?> type = Helpers.toType(klass);
-        if (!isArray && type.isPrimitive()) {
-            return data;
-        }
+        if (!isArray && type.isPrimitive()) return data;
 
         if (byte[].class.equals(klass)) {
             return arena.allocateFrom(ValueLayout.JAVA_BYTE, Objects.isNull(data) ? new byte[0] : (byte[]) data);
@@ -144,9 +142,7 @@ enum Converters {
      * @return
      */
     static Object fromExternal(final Class<?> klass, final Object data, final int length, final Arena arena) {
-        if (Objects.isNull(data)) {
-            return null;
-        }
+        if (Objects.isNull(data)) return null;
         final boolean isPointer = data instanceof MemorySegment;
         return isPointer ? fromExternal(klass, (MemorySegment) data, length, arena) : data;
     }
@@ -161,19 +157,13 @@ enum Converters {
      */
     static Object fromExternal(final Class<?> klass, final MemorySegment pointer, final int length, final Arena arena) {
 
-        if (Objects.isNull(pointer)) {
-            return null;
-        }
+        if (Objects.isNull(pointer)) return null;
 
         final Class<?> type = Helpers.toType(klass);
-        if (Helpers.isVoid(type)) {
-            return pointer;
-        }
+        if (Helpers.isVoid(type)) return pointer;
 
         final MemorySegment data = length > 0 ? pointer.reinterpret(length) : pointer;
-        if (MemorySegment.class.equals(klass)) {
-            return data;
-        }
+        if (MemorySegment.class.equals(klass)) return data;
 
         if (byte[].class.equals(klass)) {
             return data.toArray(ValueLayout.JAVA_BYTE);

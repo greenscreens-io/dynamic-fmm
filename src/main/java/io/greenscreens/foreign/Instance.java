@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015, 2024 Green Screens Ltd.
+* Copyright (C) 2015, 2025 Green Screens Ltd.
 */
 package io.greenscreens.foreign;
 
@@ -26,6 +26,5 @@ public class Instance<T> implements AutoCloseable {
     public void close() throws Exception {
         handler.close();
     }
-    
     
 }

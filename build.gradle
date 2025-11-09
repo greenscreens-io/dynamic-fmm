@@ -22,14 +22,14 @@ dependencies {
 }
 
 group = 'io.greenscreens'
-version = '1.2.0'
+version = '1.3.0'
 description = 'dynamic-ffm'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 

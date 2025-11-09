@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2024 Green Screens Ltd.
+ * Copyright (C) 2015, 2025 Green Screens Ltd.
  */
 package io.greenscreens.wkhtmltox;
 
@@ -8,7 +8,6 @@ import java.lang.foreign.MemorySegment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.greenscreens.foreign.ExternalFactory;
 import io.greenscreens.wkhtmltox.callback.IIntCallback;
 import io.greenscreens.wkhtmltox.callback.IStringCallback;
 
@@ -30,97 +29,98 @@ public class Test {
 
     static {
         System.getProperties().setProperty("wkhtmltopdf.library.path", "libs/wkhtmltox");
+        WKHtmlToX.initialize();
     }
 
     public static void main(String[] args) throws Throwable {
 
         boolean sts = false;
-        final WKHtmlToX instance = ExternalFactory.create(WKHtmlToX.class);
+        // final WKHtmlToX WKHtmlToX = ExternalFactory.create(WKHtmlToX.class);
 
-        System.out.println(instance.wkhtmltopdf_version());
+        System.out.println(WKHtmlToX.wkhtmltopdf_version());
 
-        instance.wkhtmltoimage_init(0);
-        instance.wkhtmltopdf_init(0);
+        WKHtmlToX.wkhtmltoimage_init(0);
+        WKHtmlToX.wkhtmltopdf_init(0);
 
-        sts = makePDF(instance);
+        sts = makePDF();
         System.out.println(String.format("PDF rendering: %s", sts));
 
-        sts = makeImage(instance);
+        sts = makeImage();
         System.out.println(String.format("Image rendering: %s", sts));
 
-        instance.wkhtmltoimage_deinit();
-        instance.wkhtmltopdf_deinit();
+        WKHtmlToX.wkhtmltoimage_deinit();
+        WKHtmlToX.wkhtmltopdf_deinit();
 
     }
 
-    static boolean makePDF(final WKHtmlToX instance) throws Throwable {
+    static boolean makePDF() throws Throwable {
 
         boolean sts = false;
 
-        final MemorySegment gs = instance.wkhtmltopdf_create_global_settings();
-        final MemorySegment os = instance.wkhtmltopdf_create_object_settings();
+        final MemorySegment gs = WKHtmlToX.wkhtmltopdf_create_global_settings();
+        final MemorySegment os = WKHtmlToX.wkhtmltopdf_create_object_settings();
 
-        instance.wkhtmltopdf_set_global_setting(gs, "out", pdfFile);
-        //instance.wkhtmltopdf_set_global_setting(gs, "size.pageSize ", "A3");		
-        //instance.wkhtmltopdf_set_global_setting(gs, "dpi", "300");
+        WKHtmlToX.wkhtmltopdf_set_global_setting(gs, "out", pdfFile);
+        //WKHtmlToX.wkhtmltopdf_set_global_setting(gs, "size.pageSize ", "A3");		
+        //WKHtmlToX.wkhtmltopdf_set_global_setting(gs, "dpi", "300");
 
-        //instance.wkhtmltopdf_set_object_setting(os, "dpi", "300");
-        instance.wkhtmltopdf_set_object_setting(os, "page", htmlFile);
-        instance.wkhtmltopdf_set_object_setting(os, "load.printMediaType", "true");
-        instance.wkhtmltopdf_set_object_setting(os, "web.enableJavascript", "true");
-        instance.wkhtmltopdf_set_object_setting(os, "web.loadImages", "true");
-        instance.wkhtmltopdf_set_object_setting(os, "web.background", Boolean.toString(true));
+        //WKHtmlToX.wkhtmltopdf_set_object_setting(os, "dpi", "300");
+        WKHtmlToX.wkhtmltopdf_set_object_setting(os, "page", htmlFile);
+        WKHtmlToX.wkhtmltopdf_set_object_setting(os, "load.printMediaType", "true");
+        WKHtmlToX.wkhtmltopdf_set_object_setting(os, "web.enableJavascript", "true");
+        WKHtmlToX.wkhtmltopdf_set_object_setting(os, "web.loadImages", "true");
+        WKHtmlToX.wkhtmltopdf_set_object_setting(os, "web.background", Boolean.toString(true));
 
-        final MemorySegment c = instance.wkhtmltopdf_create_converter(gs);
+        final MemorySegment c = WKHtmlToX.wkhtmltopdf_create_converter(gs);
 
         try {
 
-            instance.wkhtmltopdf_add_object(c, os, null);
+            WKHtmlToX.wkhtmltopdf_add_object(c, os, null);
 
-            instance.wkhtmltopdf_set_error_callback(c, cb1);
-            instance.wkhtmltopdf_set_warning_callback(c, cb2);
+            WKHtmlToX.wkhtmltopdf_set_error_callback(c, cb1);
+            WKHtmlToX.wkhtmltopdf_set_warning_callback(c, cb2);
 
-            final int val = instance.wkhtmltopdf_convert(c);
+            final int val = WKHtmlToX.wkhtmltopdf_convert(c);
             sts = val == 1;
         } finally {
-            instance.wkhtmltopdf_destroy_object_settings(os);
-            instance.wkhtmltopdf_destroy_global_settings(gs);
-            instance.wkhtmltopdf_destroy_converter(c);
+            WKHtmlToX.wkhtmltopdf_destroy_object_settings(os);
+            WKHtmlToX.wkhtmltopdf_destroy_global_settings(gs);
+            WKHtmlToX.wkhtmltopdf_destroy_converter(c);
         }
 
         return sts;
     }
 
-    static boolean makeImage(final WKHtmlToX instance) throws Throwable {
+    static boolean makeImage() throws Throwable {
 
         boolean sts = false;
-        final MemorySegment gs = instance.wkhtmltoimage_create_global_settings();
+        final MemorySegment gs = WKHtmlToX.wkhtmltoimage_create_global_settings();
 
-        instance.wkhtmltoimage_set_global_setting(gs, "in", htmlFile);
-        instance.wkhtmltoimage_set_global_setting(gs, "out", pngFile);
-        instance.wkhtmltoimage_set_global_setting(gs, "fmt", "png");
+        WKHtmlToX.wkhtmltoimage_set_global_setting(gs, "in", htmlFile);
+        WKHtmlToX.wkhtmltoimage_set_global_setting(gs, "out", pngFile);
+        WKHtmlToX.wkhtmltoimage_set_global_setting(gs, "fmt", "png");
 
-        instance.wkhtmltoimage_set_global_setting(gs, "smartWidth", "true");
-        instance.wkhtmltoimage_set_global_setting(gs, "transparent", "true");
-        instance.wkhtmltoimage_set_global_setting(gs, "quality", "50");
+        WKHtmlToX.wkhtmltoimage_set_global_setting(gs, "smartWidth", "true");
+        WKHtmlToX.wkhtmltoimage_set_global_setting(gs, "transparent", "true");
+        WKHtmlToX.wkhtmltoimage_set_global_setting(gs, "quality", "50");
 
-        final MemorySegment c = instance.wkhtmltoimage_create_converter(gs, null);
+        final MemorySegment c = WKHtmlToX.wkhtmltoimage_create_converter(gs, null);
 
         try {
 
-            instance.wkhtmltoimage_set_error_callback(c, cb1);
-            instance.wkhtmltoimage_set_warning_callback(c, cb2);
+            WKHtmlToX.wkhtmltoimage_set_error_callback(c, cb1);
+            WKHtmlToX.wkhtmltoimage_set_warning_callback(c, cb2);
 
             // if value == 1 then success; here only to test callback
-            instance.wkhtmltoimage_set_finished_callback(c, cb);
+            WKHtmlToX.wkhtmltoimage_set_finished_callback(c, cb);
 
-            final int val = instance.wkhtmltoimage_convert(c);
+            final int val = WKHtmlToX.wkhtmltoimage_convert(c);
             sts = val == 1;
         } finally {
             // cause JVM crash; either bug in wkhtmltox or 
             // cleared automatically when converter destroyed
-            // instance.wkhtmltoimage_destroy_global_settings(gs);            
-            instance.wkhtmltoimage_destroy_converter(c);
+            // WKHtmlToX.wkhtmltoimage_destroy_global_settings(gs);            
+            WKHtmlToX.wkhtmltoimage_destroy_converter(c);
         }
 
         return sts;
