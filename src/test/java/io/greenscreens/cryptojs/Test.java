@@ -12,7 +12,7 @@ import io.greenscreens.util.ByteUtil;
 public class Test {
 
     final static String data = "The quick brown fox jumps over the lazy dog";
-    
+
     public static void main(String[] args) {
 
         final CryptoJS crypto = ExternalFactory.create(CryptoJS.class);
